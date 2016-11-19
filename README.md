@@ -26,14 +26,11 @@ Upon completion, you will have an app, created entirely yourself, which can take
 - [ ] *Student successfully implemented input validation.*
  
 
->####Taking a Selfie
->An essential component of building a selfie app is allowing users to take pictures. There are several ways a user can end >up with a photo and over the next set of videos we use the UIImagePickerController class to build this functionality. We'll >revisit an important concept - delegates, and understand how we can build objects that are not tightly coupled from the get >go.
+>Create entry passes for the seven entrant types listed in Project 3 (Classic, VIP, Free Child, Hourly Employee - Food, Hourly Employee Maintenance, Manager)
 
->Create entry passes for the seven entrant types listed in Project 3 (Classic, VIP, Free Child, Hourly Employee - Food, >Hourly Employee Maintenance, Manager)
+>Create entry passes for the four additional entrant types listed in Project 4 (Season Pass Guest, Senior Guest, Contract Employee, Vendor)
 
->Create entry passes for the four additional entrant types listed in Project 4 (Season Pass Guest, Senior Guest, Contract >Employee, Vendor)
-
->Ensure that all necessary information is present before issuing a particular type of pass - if not, display appropriate >message
+>Ensure that all necessary information is present before issuing a particular type of pass - if not, display appropriate message
 
 >Test the pass for entry to various areas (Amusement, Ride, Kitchen, Maintenance, Office)
 
@@ -45,5 +42,5 @@ Upon completion, you will have an app, created entirely yourself, which can take
 
 >Still satisfy all code requirements from Project 4
 
->####NOTE: To get an "exceeds" rating, you should implement the following input validation feature, marked as “extra credit” in >the rubric, and earn "exceeds" ratings for all of the other requirements where an “exceeds” rating is shown (App Layout, >Enumerations,"Swipe" methods, Plug Values).
->Add additional text validation to ensure that phone numbers and zip codes are all numerical and that all text entries are >of “reasonable” length. You can decide what you deem reasonable, simply describe in a code comment. You will only be graded >on the implementation.
+>####NOTE: To get an "exceeds" rating, you should implement the following input validation feature, marked as “extra credit” in the rubric, and earn "exceeds" ratings for all of the other requirements where an “exceeds” rating is shown (App Layout, Enumerations,"Swipe" methods, Plug Values).
+>Add additional text validation to ensure that phone numbers and zip codes are all numerical and that all text entries are of “reasonable” length. You can decide what you deem reasonable, simply describe in a code comment. You will only be graded on the implementation.
