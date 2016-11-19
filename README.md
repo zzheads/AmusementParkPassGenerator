@@ -6,6 +6,7 @@
 
 [Buisness Rules Matrix](https://www.icloud.com/numbers/0yUs5A6bcia_gr2s0ZWJAKtVg#Business_Rules_Matrix-Project4-5)
 
+[Entrant Access Rules](https://www.icloud.com/numbers/0TBo5R56SZ91BDCEudgkk_eXg#Entrant_Access_Rules_-_Project_5)
 ###About this Course
 
 You will now take the code you created in Project 4 (Amusement Park Generator: Part 1) and add User Interface, along with a short list of new features and entrant types. These changes may force you to refactor some code in order to accommodate them.
