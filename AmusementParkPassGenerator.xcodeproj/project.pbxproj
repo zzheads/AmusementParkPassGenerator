@@ -14,6 +14,11 @@
 		A635861F1DE0854300B561EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A635861D1DE0854300B561EB /* LaunchScreen.storyboard */; };
 		A635862A1DE0854300B561EB /* AmusementParkPassGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63586291DE0854300B561EB /* AmusementParkPassGeneratorTests.swift */; };
 		A63586351DE0854300B561EB /* AmusementParkPassGeneratorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63586341DE0854300B561EB /* AmusementParkPassGeneratorUITests.swift */; };
+		A63586451DE09ADE00B561EB /* FaceImageAsset.png in Resources */ = {isa = PBXBuildFile; fileRef = A63586421DE09ADE00B561EB /* FaceImageAsset.png */; };
+		A63586461DE09ADE00B561EB /* Screen1Mockup.png in Resources */ = {isa = PBXBuildFile; fileRef = A63586431DE09ADE00B561EB /* Screen1Mockup.png */; };
+		A63586471DE09ADE00B561EB /* Screen2Mockup.png in Resources */ = {isa = PBXBuildFile; fileRef = A63586441DE09ADE00B561EB /* Screen2Mockup.png */; };
+		A635864A1DE09C8500B561EB /* AccessDenied.wav in Resources */ = {isa = PBXBuildFile; fileRef = A63586481DE09C8500B561EB /* AccessDenied.wav */; };
+		A635864B1DE09C8500B561EB /* AccessGranted.wav in Resources */ = {isa = PBXBuildFile; fileRef = A63586491DE09C8500B561EB /* AccessGranted.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +52,11 @@
 		A63586301DE0854300B561EB /* AmusementParkPassGeneratorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmusementParkPassGeneratorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63586341DE0854300B561EB /* AmusementParkPassGeneratorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmusementParkPassGeneratorUITests.swift; sourceTree = "<group>"; };
 		A63586361DE0854300B561EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A63586421DE09ADE00B561EB /* FaceImageAsset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FaceImageAsset.png; path = AmusementParkMockups/FaceImageAsset.png; sourceTree = "<group>"; };
+		A63586431DE09ADE00B561EB /* Screen1Mockup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Screen1Mockup.png; path = AmusementParkMockups/Screen1Mockup.png; sourceTree = "<group>"; };
+		A63586441DE09ADE00B561EB /* Screen2Mockup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Screen2Mockup.png; path = AmusementParkMockups/Screen2Mockup.png; sourceTree = "<group>"; };
+		A63586481DE09C8500B561EB /* AccessDenied.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = AccessDenied.wav; path = AudioFiles/AccessDenied.wav; sourceTree = "<group>"; };
+		A63586491DE09C8500B561EB /* AccessGranted.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = AccessGranted.wav; path = AudioFiles/AccessGranted.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +91,7 @@
 				A63586281DE0854300B561EB /* AmusementParkPassGeneratorTests */,
 				A63586331DE0854300B561EB /* AmusementParkPassGeneratorUITests */,
 				A63586121DE0854300B561EB /* Products */,
+				A635864C1DE09C8A00B561EB /* Resources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,6 +134,18 @@
 				A63586361DE0854300B561EB /* Info.plist */,
 			);
 			path = AmusementParkPassGeneratorUITests;
+			sourceTree = "<group>";
+		};
+		A635864C1DE09C8A00B561EB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A63586481DE09C8500B561EB /* AccessDenied.wav */,
+				A63586491DE09C8500B561EB /* AccessGranted.wav */,
+				A63586421DE09ADE00B561EB /* FaceImageAsset.png */,
+				A63586431DE09ADE00B561EB /* Screen1Mockup.png */,
+				A63586441DE09ADE00B561EB /* Screen2Mockup.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,8 +256,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A635861F1DE0854300B561EB /* LaunchScreen.storyboard in Resources */,
+				A63586461DE09ADE00B561EB /* Screen1Mockup.png in Resources */,
 				A635861C1DE0854300B561EB /* Assets.xcassets in Resources */,
 				A635861A1DE0854300B561EB /* Main.storyboard in Resources */,
+				A635864B1DE09C8500B561EB /* AccessGranted.wav in Resources */,
+				A63586451DE09ADE00B561EB /* FaceImageAsset.png in Resources */,
+				A63586471DE09ADE00B561EB /* Screen2Mockup.png in Resources */,
+				A635864A1DE09C8500B561EB /* AccessDenied.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +531,7 @@
 				A635863B1DE0854300B561EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A635863C1DE0854300B561EB /* Build configuration list for PBXNativeTarget "AmusementParkPassGeneratorTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +540,7 @@
 				A635863E1DE0854300B561EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A635863F1DE0854300B561EB /* Build configuration list for PBXNativeTarget "AmusementParkPassGeneratorUITests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +549,7 @@
 				A63586411DE0854300B561EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
