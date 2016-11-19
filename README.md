@@ -14,16 +14,16 @@ Upon completion, you will have an app, created entirely yourself, which can take
 - [ ] Passes are created correctly, based on required information. For Vendors and Contractors, only those Project Numbers and Vendor Companies listed in the Entrant Access Rules should be accepted.
 - [ ] Makes use of protocols and inheritance such that code is clean and (somewhat) extensible
 - [ ] Uses enums for Error types, Mgr. Types, Emp. Types, Vendors or Guest Types
-*Makes use of associated values for cleaner or more elegant code.*
+`Makes use of associated values for cleaner or more elegant code.`
 - [ ] Errors are created using enums, are thrown at appropriate times and carry informative messages.
 - [ ] Creates one or more swipe methods to handle access to areas, rides, skips and discounts. Methods should return bools, or appropriate results, not throw errors when access is denied.
-*Makes use of clever polymorphic or dynamic code for highly reusable swiping.*
+`Makes use of clever polymorphic or dynamic code for highly reusable swiping.`
 - [ ] Correctly grants access to Vendors and Contractors based on Entrant Access Rules provided.
 - [ ] Creates (and comments out) a complete set of plug values such that all entrant types and most errors can be tested.
-*Creates a truly exhaustive set of plug values which allows for testing of all entrant types and ALL reasonable error paths*
+`Creates a truly exhaustive set of plug values which allows for testing of all entrant types and ALL reasonable error paths`
 - [ ] Uses expressive variable/method names and sufficiently descriptive comments.
 - [ ] Code is available on GitHub, is free of errors and compiles.
-- [ ] *Student successfully implemented input validation.*
+- [ ] `Student successfully implemented input validation.`
  
 
 >Create entry passes for the seven entrant types listed in Project 3 (Classic, VIP, Free Child, Hourly Employee - Food, Hourly Employee Maintenance, Manager)
