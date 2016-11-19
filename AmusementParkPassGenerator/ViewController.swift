@@ -20,7 +20,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.setupTopNavigationBar()
         let rect = CGRect(x: 100, y: 200, width: 100, height: 100)
-        let frame = UI
         
         guestButton.setupButton(title: "Guest", position: 0, parentView: self.topNavBar, target: self, action: #selector(self.guestButtonPressed))
         guestButton.select()
