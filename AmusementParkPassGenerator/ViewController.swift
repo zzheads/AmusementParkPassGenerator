@@ -10,10 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let mainMenuBar = NavigationBar(menuBar: .Top)
-    let guestMenuBar = NavigationBar(menuBar: .Bottom)
-    let employeeMenuBar = NavigationBar(menuBar: .Bottom)
-    let emptyMenuBar = NavigationBar(menuBar: .Bottom)
+    let mainMenuBar = MenuBar(menuBar: .Top)
+    let guestMenuBar = MenuBar(menuBar: .Bottom)
+    let employeeMenuBar = MenuBar(menuBar: .Bottom)
+    let emptyMenuBar = MenuBar(menuBar: .Bottom)
     
     let topMenuTitles = ["Guest", "Employee", "Manager", "Vendor"]
     let guestMenuTitles = ["Child", "Adult", "Senior", "VIP"]
@@ -85,6 +85,9 @@ class ViewController: UIViewController {
             
             
         default:
+            guestMenuBar.isHidden = true
+            employeeMenuBar.isHidden = true
+            emptyMenuBar.isHidden = false
             print("\(title) been pressed!")
         }
     }
