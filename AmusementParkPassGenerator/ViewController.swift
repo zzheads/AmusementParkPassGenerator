@@ -14,6 +14,24 @@ class ViewController: UIViewController {
     let guestMenuBar = MenuBar(menuBar: .Bottom)
     let employeeMenuBar = MenuBar(menuBar: .Bottom)
     let emptyMenuBar = MenuBar(menuBar: .Bottom)
+    var activeMenuBar: MenuBar? = nil {
+        willSet {
+            if self.activeMenuBar == nil {
+                guestMenuBar.isHidden = true
+                employeeMenuBar.isHidden = true
+                emptyMenuBar.isHidden = true
+            } else {
+                self.activeMenuBar?.isHidden = true
+            }
+            
+        }
+        didSet {
+            guard let activeMenuBar = self.activeMenuBar else {
+                return
+            }
+            activeMenuBar.isHidden = false
+        }
+    }
     
     let topMenuTitles = ["Guest", "Employee", "Manager", "Vendor"]
     let guestMenuTitles = ["Child", "Adult", "Senior", "VIP"]
@@ -31,6 +49,7 @@ class ViewController: UIViewController {
         self.view.addSubview(guestMenuBar)
         self.view.addSubview(employeeMenuBar)
         self.view.addSubview(emptyMenuBar)
+        self.activeMenuBar = emptyMenuBar
 
         for i in 0..<topMenuTitles.count {
             let button = MenuButton(title: topMenuTitles[i], position: i, number: topMenuTitles.count, parentView: mainMenuBar, navBar: .Top, target: self, action: #selector(buttonPressed(sender:)))
@@ -46,8 +65,6 @@ class ViewController: UIViewController {
             let button = MenuButton(title: employeeMenuTitles[i], position: i, number: employeeMenuTitles.count, parentView: employeeMenuBar, navBar: .Bottom, target: self, action: #selector(buttonPressed(sender:)))
             employeeMenu.append(button)
         }
-        employeeMenuBar.isHidden = true
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,27 +84,15 @@ class ViewController: UIViewController {
         
         switch title {
         case "Guest":
-            guestMenuBar.isHidden = false
-            employeeMenuBar.isHidden = true
-            emptyMenuBar.isHidden = true
+            self.activeMenuBar = guestMenuBar
         case "Employee":
-            guestMenuBar.isHidden = true
-            employeeMenuBar.isHidden = false
-            emptyMenuBar.isHidden = true
+            self.activeMenuBar = employeeMenuBar
         case "Manager":
-            guestMenuBar.isHidden = true
-            employeeMenuBar.isHidden = true
-            emptyMenuBar.isHidden = false
+            self.activeMenuBar = emptyMenuBar
         case "Vendor":
-            guestMenuBar.isHidden = true
-            employeeMenuBar.isHidden = true
-            emptyMenuBar.isHidden = false
-            
+            self.activeMenuBar = emptyMenuBar
             
         default:
-            guestMenuBar.isHidden = true
-            employeeMenuBar.isHidden = true
-            emptyMenuBar.isHidden = false
             print("\(title) been pressed!")
         }
     }
