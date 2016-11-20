@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     let mainMenuBar = NavigationBar(menuBar: .Top)
     let guestMenuBar = NavigationBar(menuBar: .Bottom)
     let employeeMenuBar = NavigationBar(menuBar: .Bottom)
+    let emptyMenuBar = NavigationBar(menuBar: .Bottom)
     
     let topMenuTitles = ["Guest", "Employee", "Manager", "Vendor"]
     let guestMenuTitles = ["Child", "Adult", "Senior", "VIP"]
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
         self.view.addSubview(mainMenuBar)
         self.view.addSubview(guestMenuBar)
         self.view.addSubview(employeeMenuBar)
+        self.view.addSubview(emptyMenuBar)
 
         for i in 0..<topMenuTitles.count {
             let button = MenuButton(title: topMenuTitles[i], position: i, number: topMenuTitles.count, parentView: mainMenuBar, navBar: .Top, target: self, action: #selector(buttonPressed(sender:)))
@@ -65,11 +67,23 @@ class ViewController: UIViewController {
         
         switch title {
         case "Guest":
-            employeeMenuBar.isHidden = true
             guestMenuBar.isHidden = false
+            employeeMenuBar.isHidden = true
+            emptyMenuBar.isHidden = true
         case "Employee":
-            employeeMenuBar.isHidden = false
             guestMenuBar.isHidden = true
+            employeeMenuBar.isHidden = false
+            emptyMenuBar.isHidden = true
+        case "Manager":
+            guestMenuBar.isHidden = true
+            employeeMenuBar.isHidden = true
+            emptyMenuBar.isHidden = false
+        case "Vendor":
+            guestMenuBar.isHidden = true
+            employeeMenuBar.isHidden = true
+            emptyMenuBar.isHidden = false
+            
+            
         default:
             print("\(title) been pressed!")
         }
