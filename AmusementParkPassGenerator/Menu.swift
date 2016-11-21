@@ -95,7 +95,6 @@ class MenuButton {
             button.show()
         }
     }
-
 }
 
 

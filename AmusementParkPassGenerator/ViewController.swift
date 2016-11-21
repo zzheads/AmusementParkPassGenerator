@@ -39,12 +39,28 @@ class ViewController: UIViewController {
     let guestMenuTitles = ["Child", "Adult", "Senior", "VIP"]
     let employeeMenuTitles = ["Food Services", "Ride Services", "Maintenance", "Contract"]
     
+    let textFieldsTitles: [TextFieldDesc] = [
+        (posX: 0, totalX: 3, posY: 0, totalY: 5, title: "Date of Birth", isEditable: .Disabled,placeholder: "MM/DD/YYYY"),
+        (posX: 1, totalX: 3, posY: 0, totalY: 5, title: "SSN", isEditable: .Disabled, placeholder: "###-##-####"),
+        (posX: 2, totalX: 3, posY: 0, totalY: 5, title: "Project #", isEditable: .Disabled, placeholder: "#######"),
+        (posX: 0, totalX: 2, posY: 1, totalY: 5, title: "First Name", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 2, posY: 1, totalY: 5, title: "Last Name", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 1, posY: 2, totalY: 5, title: "Company", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 1, posY: 3, totalY: 5, title: "Street Address", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 3, posY: 4, totalY: 5, title: "City", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 3, posY: 4, totalY: 5, title: "State", isEditable: .Disabled, placeholder: nil),
+        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Zip Code", isEditable: .Disabled, placeholder: nil),
+    ]
+    
     var topMenu: [MenuButton] = []
     var guestMenu: [MenuButton] = []
     var employeeMenu: [MenuButton] = []
     
-    var wasSelected: UIButton? = nil
+    var wasSelected: UIButton?
     
+    var genPassButton: UIButton?
+    var popDataButton: UIButton?
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(mainMenuBar)
@@ -53,60 +69,27 @@ class ViewController: UIViewController {
         self.view.addSubview(emptyMenuBar)
         self.activeMenuBar = emptyMenuBar
 
-        for i in 0..<topMenuTitles.count {
-            let button = MenuButton(title: topMenuTitles[i], position: i, number: topMenuTitles.count, parentView: mainMenuBar, navBar: .Top, target: self, action: #selector(buttonPressed(sender:)))
-            topMenu.append(button)
-        }
-
-        for i in 0..<guestMenuTitles.count {
-            let button = MenuButton(title: guestMenuTitles[i], position: i, number: guestMenuTitles.count, parentView: guestMenuBar, navBar: .Bottom, target: self, action: #selector(buttonPressed(sender:)))
-            guestMenu.append(button)
-        }
-
-        for i in 0..<employeeMenuTitles.count {
-            let button = MenuButton(title: employeeMenuTitles[i], position: i, number: employeeMenuTitles.count, parentView: employeeMenuBar, navBar: .Bottom, target: self, action: #selector(buttonPressed(sender:)))
-            employeeMenu.append(button)
-        }
+        self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: topMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
+        self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: guestMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
+        self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: employeeMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         
-        let dateOfBirth = TextField(positionX: 0, totalX: 3, positionY: 0, totalY: 5, label: "Date Of Birth", placeholder: "MM/DD/YYYY")
-        dateOfBirth.appendTo(view: self.view)
-        dateOfBirth.enable()
-
-        let ssn = TextField(positionX: 1, totalX: 3, positionY: 0, totalY: 5, label: "SSN", placeholder: "###-##-####")
-        ssn.appendTo(view: self.view)
-
-        let project = TextField(positionX: 2, totalX: 3, positionY: 0, totalY: 5, label: "Project #", placeholder: "#######")
-        project.appendTo(view: self.view)
-
-        let firstName = TextField(positionX: 0, totalX: 2, positionY: 1, totalY: 5, label: "First Name")
-        firstName.appendTo(view: self.view)
-
-        let lastName = TextField(positionX: 1, totalX: 2, positionY: 1, totalY: 5, label: "Last Name")
-        lastName.appendTo(view: self.view)
-
-        let company = TextField(positionX: 0, totalX: 1, positionY: 2, totalY: 5, label: "Company")
-        company.appendTo(view: self.view)
-
-        let streetAddress = TextField(positionX: 0, totalX: 1, positionY: 3, totalY: 5, label: "Street Address")
-        streetAddress.appendTo(view: self.view)
-
-        let city = TextField(positionX: 0, totalX: 3, positionY: 4, totalY: 5, label: "City")
-        city.appendTo(view: self.view)
-        let state = TextField(positionX: 1, totalX: 3, positionY: 4, totalY: 5, label: "State")
-        state.appendTo(view: self.view)
-        let zipCode = TextField(positionX: 2, totalX: 3, positionY: 4, totalY: 5, label: "Zip Code")
-        zipCode.appendTo(view: self.view)
+        var textFields: [TextField] = []
+        for desc in textFieldsTitles {
+            let textField = TextField(textFieldDesc: desc)
+            textFields.append(textField)
+            textField.appendTo(view: self.view)
+        }
+        textFields.findByLabel(label: "Date of Birth")?.enable()
         
-        
-        let genPassButton = ActionButton(type: .GeneratePass)
-        let popDataButton = ActionButton(type: .PopulateData)
-        self.view.addSubview(genPassButton)
-        self.view.addSubview(popDataButton)
+        self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.view)
+        self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.view)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    // MARK: - Listeners
     
     @objc func buttonPressed(sender: UIButton) {
         guard let title = sender.currentTitle else {
@@ -134,6 +117,12 @@ class ViewController: UIViewController {
         }
     }
     
+    func generatePass(sender _: UIButton) {
+        print("Generate pass!")
+    }
 
+    func populateData(sender _: UIButton) {
+        print("Populate Data!")
+    }
 }
 

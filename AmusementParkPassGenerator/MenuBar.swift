@@ -56,3 +56,14 @@ class MenuBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+extension MenuBar {
+    func addButtons(navBar: MenuBars, titles: [String], target: Any?, action: Selector) -> [MenuButton] {
+        var result: [MenuButton] = []
+        for i in 0..<titles.count {
+            let button = MenuButton(title: titles[i], position: i, number: titles.count, parentView: self, navBar: navBar, target: target, action: action)
+            result.append(button)
+        }
+        return result
+    }
+}

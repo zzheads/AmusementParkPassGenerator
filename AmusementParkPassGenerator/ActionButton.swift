@@ -41,23 +41,28 @@ enum ActionButtons: String {
     }
 }
 
-class ActionButton: UIButton {
-    let type: ActionButtons
-    
-    init(type: ActionButtons) {
-        self.type = type
-        let rect = CGRect(x: type.x, y: type.y, width: type.width, height: type.height)
-        super.init(frame: rect)
-        self.backgroundColor = type.backgroundColor
-        self.setTitleColor(type.color, for: .normal)
-        self.setTitle(type.rawValue, for: .normal)
-        self.layer.cornerRadius = 4
-        self.layer.masksToBounds = true
-        self.titleLabel!.font = UIFont.boldSystemFont(ofSize: 17)
-        self.isHidden = false
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+extension UIButton {
+    static func getButton(type: ActionButtons, target: Any?, action: Selector, parentView: UIView) -> UIButton {
+        let result = UIButton(type: .system)
+        
+        result.backgroundColor = type.backgroundColor
+        result.setTitleColor(type.color, for: .normal)
+        result.setTitle(type.rawValue, for: .normal)
+        result.layer.cornerRadius = 4
+        result.layer.masksToBounds = true
+        result.titleLabel!.font = UIFont.boldSystemFont(ofSize: 17)
+        result.isHidden = false
+        result.addTarget(target, action: action, for: .touchUpInside)
+        parentView.addSubview(result)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            result.topAnchor.constraint(equalTo: parentView.topAnchor, constant: CGFloat(type.y)),
+            result.leftAnchor.constraint(equalTo: parentView.leftAnchor, constant: CGFloat(type.x)),
+            result.widthAnchor.constraint(equalToConstant: CGFloat(type.width)),
+            result.heightAnchor.constraint(equalToConstant: CGFloat(type.height))
+            ])
+        
+        return result
     }
 }
+

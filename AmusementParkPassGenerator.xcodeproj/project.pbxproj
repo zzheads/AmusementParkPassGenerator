@@ -165,7 +165,6 @@
 		A6EDC8241DE0B83A0059DEFA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A6EDC8251DE0B8560059DEFA /* Colors.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -173,6 +172,7 @@
 		A6EDC8611DE104BF0059DEFA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A6EDC8251DE0B8560059DEFA /* Colors.swift */,
 				A6EDC8621DE104FF0059DEFA /* Menu.swift */,
 				A6839EC11DE1D01C00D98D55 /* MenuBar.swift */,
 				A643C17F1DE2F1E700B9CC8D /* TextField.swift */,

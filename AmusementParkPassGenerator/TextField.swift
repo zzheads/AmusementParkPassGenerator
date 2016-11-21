@@ -26,6 +26,8 @@ enum TextFieldState {
     }
 }
 
+typealias TextFieldDesc = (posX: Int, totalX: Int, posY: Int, totalY: Int, title: String, isEditable: TextFieldState, placeholder: String?)
+
 class TextField: UITextField {
     static var offsetX: Int {
         return Int(Double(TextField.marginX) * 1.25)
@@ -86,12 +88,29 @@ class TextField: UITextField {
         }
         line = HorizontalLine(xStart: 0, xEnd: Int(UIScreen.main.bounds.size.width), y: y + Int(Double(TextField.marginY) * 3), color: AppColor.GrayHalfTransparent.rawValue)
         super.init(frame: rect)
+
+        let paddingRect = CGRect(x: 0, y: 0, width: 15, height: self.frame.height)
+        let paddingView = UIView(frame: paddingRect)
+        self.leftView = paddingView
+        self.leftViewMode = UITextFieldViewMode.always
+        
         self.placeholder = placeholder
         self.borderStyle = UITextBorderStyle.roundedRect
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 4
         self.layer.masksToBounds = true
         self.disable()
+    }
+    
+    convenience init(textFieldDesc: TextFieldDesc) {
+        let positionX = textFieldDesc.posX
+        let totalX = textFieldDesc.totalX
+        let positionY = textFieldDesc.posY
+        let totalY = textFieldDesc.totalY
+        let title = textFieldDesc.title
+        let isEditable = textFieldDesc.isEditable
+        let placeholder = textFieldDesc.placeholder
+        self.init(positionX: positionX, totalX: totalX, positionY: positionY, totalY: totalY, isEditable: isEditable, label: title, placeholder: placeholder)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -113,5 +132,18 @@ class TextField: UITextField {
     func disable() {
         self.isEditable = .Disabled
     }
-    
 }
+
+extension Array where Element: TextField {
+    func findByLabel(label: String) -> TextField? {
+        let result = self.first { (textField) -> Bool in
+            if textField.label?.text == label {
+                return true
+            } else {
+                return false
+            }
+        }
+        return result
+    }
+}
+
