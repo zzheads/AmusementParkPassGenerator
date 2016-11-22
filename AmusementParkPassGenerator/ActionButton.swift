@@ -19,7 +19,7 @@ enum ActionButtons: String {
         }
     }
     var y: Int {
-        return Int(UIScreen.main.bounds.size.height * 2 / 3)
+        return Int(UIScreen.main.bounds.size.height - 280)
     }
     var width: Int {
         return (27 * TextField.marginX) / 2 - TextField.marginX
