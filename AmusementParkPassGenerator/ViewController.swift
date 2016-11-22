@@ -11,6 +11,8 @@ import CoreGraphics
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     let mainMenuBar = MenuBar(menuBar: .Top)
     let guestMenuBar = MenuBar(menuBar: .Bottom)
     let employeeMenuBar = MenuBar(menuBar: .Bottom)
@@ -66,10 +68,11 @@ class ViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(mainMenuBar)
-        self.view.addSubview(guestMenuBar)
-        self.view.addSubview(employeeMenuBar)
-        self.view.addSubview(emptyMenuBar)
+        
+        self.scrollView.addSubview(mainMenuBar)
+        self.scrollView.addSubview(guestMenuBar)
+        self.scrollView.addSubview(employeeMenuBar)
+        self.scrollView.addSubview(emptyMenuBar)
         self.activeMenuBar = emptyMenuBar
 
         self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: topMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
@@ -79,11 +82,11 @@ class ViewController: UIViewController {
         for desc in textFieldsTitles {
             let textField = TextField(textFieldDesc: desc)
             self.textFields.append(textField)
-            textField.appendTo(view: self.view)
+            textField.appendTo(view: self.scrollView)
         }
         
-        self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.view)
-        self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.view)
+        self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.scrollView)
+        self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.scrollView)
         
         //TestingModel()
     }
@@ -126,31 +129,40 @@ class ViewController: UIViewController {
             self.activeMenuBar = emptyMenuBar
         case "Vendor":
             self.activeMenuBar = emptyMenuBar
-        case "Child":
-            break
-        case "Adult":
-            break
-        case "Senior":
-            break
-        case "VIP":
-            break
-        case "Season":
-            break
-        case "Food Services":
-            break
-        case "Ride Services":
-            break
-        case "Maintenance":
-            break
-        case "Contract":
-            break
         default:
-            print("\(title) been pressed!")
+            break
         }
     }
     
     func generatePass(sender _: UIButton) {
         print("Generate pass!")
+        
+        guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
+            print("wasSelected: \(self.wasSelected), title: \(self.wasSelected?.currentTitle), type: \(EntrantType(rawValue: (self.wasSelected?.currentTitle)!))")
+            return
+        }
+        let firstName = self.textFields.findByLabel(label: "First Name")?.text
+        let lastName = self.textFields.findByLabel(label: "Last Name")?.text
+        let street = self.textFields.findByLabel(label: "Street Address")?.text
+        let city = self.textFields.findByLabel(label: "City")?.text
+        let state = self.textFields.findByLabel(label: "State")?.text
+        let zipCode = self.textFields.findByLabel(label: "Zip Code")?.text
+        let ssn = self.textFields.findByLabel(label: "SSN")?.text
+        let project = self.textFields.findByLabel(label: "Project #")?.text
+        let company = self.textFields.findByLabel(label: "Company")?.text
+        let tier = self.textFields.findByLabel(label: "Management Tier")?.text
+        let dateOfBirth = self.textFields.findByLabel(label: "Date of Birth")?.text
+        let dateOfVisit = self.textFields.findByLabel(label: "Date of Visit")?.text
+        
+        let entrant = Entrant(type: type, firstName: firstName, lastName: lastName, streetAddress: street, city: city, state: state, zipCode: zipCode, dateOfBirth: dateOfBirth, managementTier: tier, socialSecurityNumber: ssn, projectNumber: project, vendorCompany: company, dateOfVisit: dateOfVisit)
+        do {
+            try entrant.checkRequirements()
+            print("\(entrant)")
+        } catch let error as RequirementsError {
+            print("Error creating entrant, you have to enter all selected fields, there is no info: \(error.localizedDescription)")
+        } catch let error {
+            print("\(error.localizedDescription)")
+        }
     }
 
     func populateData(sender _: UIButton) {
@@ -160,7 +172,7 @@ class ViewController: UIViewController {
     // MARK: - Testing model methods
     
     func TestingModel() {
-        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: Date(), managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: Date())
+        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: "02/06/1974", managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: "22/11/2016")
         let anotherEntrant = Entrant(type: .GuestVip)
         
         var ride = RideTurnstyle()

@@ -10,35 +10,22 @@ import Foundation
 
 // MARK: - Requirements
 
-enum Requirements: CheckParent, CustomStringConvertible {
-    case FirstName
-    case LastName
-    case StreetAddress
-    case City
-    case State
-    case ZipCode
-    case DateOfBirth
-    case ManagementTier
-    case SocialSecurityNumber
-    case ProjectNumber
-    case VendorCompany
-    case DateOfVisit
+enum Requirements: String, CheckParent, CustomStringConvertible {
+    case FirstName = "First Name"
+    case LastName = "Last Name"
+    case StreetAddress = "Street Address"
+    case City = "City"
+    case State = "State"
+    case ZipCode = "Zip Code"
+    case DateOfBirth = "Date of Birth"
+    case ManagementTier = "Management Tier"
+    case SocialSecurityNumber = "SSN"
+    case ProjectNumber = "Project #"
+    case VendorCompany = "Company"
+    case DateOfVisit = "Date of Visit"
     
     var description: String {
-        switch self {
-        case .FirstName: return "First Name"
-        case .LastName: return "Last Name"
-        case .City: return "City"
-        case .DateOfBirth: return "Date of Birth"
-        case .State: return "State"
-        case .StreetAddress: return "Street Address"
-        case .ZipCode: return "Zip Code"
-        case .ManagementTier: return "Management Tier"
-        case .SocialSecurityNumber: return "SSN"
-        case .ProjectNumber: return "Project #"
-        case .VendorCompany: return "Vendor Company"
-        case .DateOfVisit: return "Date of Visit"
-        }
+        return self.rawValue
     }
 }
 
@@ -66,35 +53,23 @@ extension Requirementable {
 
 // MARK: - Requirements Errors
 
-enum RequirementsError: Error {
-    case noFirstName
-    case noLastName
-    case noStreetAddress
-    case noCity
-    case noState
-    case noZipCode
-    case noDateOfBirth
-    case noManagementTier
-    case noSocialSecurityNumber
-    case noProjectNumber
-    case noVendorCompany
-    case noDateOfVisit
+enum RequirementsError: String, Error {
+    case FirstName = "First Name"
+    case LastName = "Last Name"
+    case StreetAddress = "Street Address"
+    case City = "City"
+    case State = "State"
+    case ZipCode = "Zip Code"
+    case DateOfBirth = "Date of Birth"
+    case ManagementTier = "Management Tier"
+    case SocialSecurityNumber = "SSN"
+    case ProjectNumber = "Project #"
+    case VendorCompany = "Company"
+    case DateOfVisit = "Date of Visit"
+    case unknownError
     
-    var rawValue: String {
-        switch self {
-        case .noFirstName: return "First Name"
-        case .noLastName: return "Last Name"
-        case .noStreetAddress: return "Street Address"
-        case .noCity: return "City"
-        case .noState: return "State"
-        case .noZipCode: return "Zip Code"
-        case .noDateOfBirth: return "Date of Birth"
-        case .noManagementTier: return "Management Tier"
-        case .noSocialSecurityNumber: return "Social Security Number"
-        case .noProjectNumber: return "Project Number"
-        case .noVendorCompany: return "Vendor Company"
-        case .noDateOfVisit: return "Date of Visit"
-        }
+    var localizedDescription: String {
+        return self.rawValue
     }
 }
 

@@ -65,7 +65,7 @@ extension Entrant: CustomStringConvertible {
             descriptionString += "Address: \(address), "
         }
         if let date = self.dateOfBirth {
-            descriptionString += "Born: \(date.toString), "
+            descriptionString += "Born: \(date), "
         }
         if let management = self.managementTier {
             descriptionString += "Tier: \(management), "
@@ -80,7 +80,7 @@ extension Entrant: CustomStringConvertible {
             descriptionString += "Company: \(vendorCompany), "
         }
         if let dateOfVisit = self.dateOfVisit {
-            descriptionString += "Date of Visit: \(dateOfVisit.toString), "
+            descriptionString += "Date of Visit: \(dateOfVisit), "
         }
         return descriptionString
     }
@@ -88,41 +88,39 @@ extension Entrant: CustomStringConvertible {
 
 extension Entrant {
     func checkRequirements() throws {
-        if self.requirements.contains(.FirstName) && self.firstName == nil {
-            throw RequirementsError.noFirstName
-        }
-        if self.requirements.contains(.LastName) && self.lastName == nil {
-            throw RequirementsError.noLastName
-        }
-        if self.requirements.contains(.StreetAddress) && self.streetAddress == nil {
-            throw RequirementsError.noStreetAddress
-        }
-        if self.requirements.contains(.City) && self.city == nil {
-            throw RequirementsError.noCity
-        }
-        if self.requirements.contains(.State) && self.state == nil {
-            throw RequirementsError.noState
-        }
-        if self.requirements.contains(.ZipCode) && self.zipCode == nil {
-            throw RequirementsError.noZipCode
-        }
-        if self.requirements.contains(.DateOfBirth) && self.dateOfBirth == nil {
-            throw RequirementsError.noDateOfBirth
-        }
-        if self.requirements.contains(.ManagementTier) && self.managementTier == nil {
-            throw RequirementsError.noManagementTier
-        }
-        if self.requirements.contains(.SocialSecurityNumber) && self.socialSecurityNumber == nil {
-            throw RequirementsError.noSocialSecurityNumber
-        }
-        if self.requirements.contains(.ProjectNumber) && self.projectNumber == nil {
-            throw RequirementsError.noProjectNumber
-        }
-        if self.requirements.contains(.VendorCompany) && self.vendorCompany == nil {
-            throw RequirementsError.noVendorCompany
-        }
-        if self.requirements.contains(.DateOfVisit) && self.dateOfVisit == nil {
-            throw RequirementsError.noDateOfVisit
+        let dict: [Requirements: String?] = [
+            Requirements.FirstName              : self.firstName,
+            Requirements.LastName               : self.lastName,
+            Requirements.StreetAddress          : self.streetAddress,
+            Requirements.City                   : self.city,
+            Requirements.State                  : self.state,
+            Requirements.ZipCode                : self.zipCode,
+            Requirements.DateOfBirth            : self.dateOfBirth,
+            Requirements.DateOfVisit            : self.dateOfVisit,
+            Requirements.SocialSecurityNumber   : self.socialSecurityNumber,
+            Requirements.ProjectNumber          : self.projectNumber,
+            Requirements.ManagementTier         : self.managementTier,
+            Requirements.VendorCompany          : self.vendorCompany
+        ]
+        
+        for (key, value) in dict {
+            if self.requirements.contains(key) {
+                if let value = value {
+                    if value.isEmpty {
+                        if let error = RequirementsError(rawValue: key.rawValue) {
+                            throw error
+                        } else {
+                            throw RequirementsError.unknownError
+                        }
+                    }
+                } else {
+                    if let error = RequirementsError(rawValue: key.rawValue) {
+                        throw error
+                    } else {
+                        throw RequirementsError.unknownError
+                    }
+                }
+            }
         }
     }
 }

@@ -35,15 +35,15 @@ class Entrant: Entrantable {
     let city: String?
     let state: String?
     let zipCode: String?
-    let dateOfBirth: Date?
+    let dateOfBirth: String?
     let managementTier: String?
     let socialSecurityNumber: String?
     let projectNumber: String?
     let vendorCompany: String?
-    let dateOfVisit: Date?
+    let dateOfVisit: String?
     
     
-    init(type: EntrantType, firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, dateOfBirth: Date? = nil, managementTier: String? = nil, socialSecurityNumber: String? = nil, projectNumber: String? = nil, vendorCompany: String? = nil, dateOfVisit: Date? = nil) {
+    init(type: EntrantType, firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, dateOfBirth: String? = nil, managementTier: String? = nil, socialSecurityNumber: String? = nil, projectNumber: String? = nil, vendorCompany: String? = nil, dateOfVisit: String? = nil) {
         self.type = type
         
         self.firstName = firstName
