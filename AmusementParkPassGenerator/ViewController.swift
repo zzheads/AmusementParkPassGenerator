@@ -36,7 +36,7 @@ class ViewController: UIViewController {
 
     
     let topMenuTitles = ["Guest", "Employee", "Manager", "Vendor"]
-    let guestMenuTitles = ["Child", "Adult", "Senior", "VIP"]
+    let guestMenuTitles = ["Child", "Adult", "Senior", "VIP", "Season"]
     let employeeMenuTitles = ["Food Services", "Ride Services", "Maintenance", "Contract"]
     
     let textFieldsTitles: [TextFieldDesc] = [
@@ -45,12 +45,15 @@ class ViewController: UIViewController {
         (posX: 2, totalX: 3, posY: 0, totalY: 5, title: "Project #", isEditable: .Disabled, placeholder: "#######"),
         (posX: 0, totalX: 2, posY: 1, totalY: 5, title: "First Name", isEditable: .Disabled, placeholder: nil),
         (posX: 1, totalX: 2, posY: 1, totalY: 5, title: "Last Name", isEditable: .Disabled, placeholder: nil),
-        (posX: 0, totalX: 1, posY: 2, totalY: 5, title: "Company", isEditable: .Disabled, placeholder: nil),
-        (posX: 0, totalX: 1, posY: 3, totalY: 5, title: "Street Address", isEditable: .Disabled, placeholder: nil),
-        (posX: 0, totalX: 3, posY: 4, totalY: 5, title: "City", isEditable: .Disabled, placeholder: nil),
-        (posX: 1, totalX: 3, posY: 4, totalY: 5, title: "State", isEditable: .Disabled, placeholder: nil),
-        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Zip Code", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 2, posY: 2, totalY: 5, title: "Company", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 2, posY: 2, totalY: 5, title: "Management Tier", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 2, posY: 3, totalY: 5, title: "Street Address", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 2, posY: 3, totalY: 5, title: "City", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 3, posY: 4, totalY: 5, title: "State", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 3, posY: 4, totalY: 5, title: "Zip Code", isEditable: .Disabled, placeholder: nil),
+        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Date of Visit", isEditable: .Disabled, placeholder: "MM/DD/YYYY"),
     ]
+    var textFields: [TextField] = []
     
     var topMenu: [MenuButton] = []
     var guestMenu: [MenuButton] = []
@@ -73,13 +76,11 @@ class ViewController: UIViewController {
         self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: guestMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: employeeMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         
-        var textFields: [TextField] = []
         for desc in textFieldsTitles {
             let textField = TextField(textFieldDesc: desc)
-            textFields.append(textField)
+            self.textFields.append(textField)
             textField.appendTo(view: self.view)
         }
-        textFields.findByLabel(label: "Date of Birth")?.enable()
         
         self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.view)
         self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.view)
@@ -104,6 +105,18 @@ class ViewController: UIViewController {
         sender.select()
         self.wasSelected = sender
         
+        if let entrantType = EntrantType(rawValue: title) {
+            for textField in self.textFields {
+                textField.disable()
+            }
+            let reqs = Entrant(type: entrantType).requirements
+            for req in reqs {
+                if let textField = self.textFields.findByLabel(label: req.description) {
+                    textField.enable()
+                }
+            }
+        }
+        
         switch title {
         case "Guest":
             self.activeMenuBar = guestMenuBar
@@ -113,7 +126,24 @@ class ViewController: UIViewController {
             self.activeMenuBar = emptyMenuBar
         case "Vendor":
             self.activeMenuBar = emptyMenuBar
-            
+        case "Child":
+            break
+        case "Adult":
+            break
+        case "Senior":
+            break
+        case "VIP":
+            break
+        case "Season":
+            break
+        case "Food Services":
+            break
+        case "Ride Services":
+            break
+        case "Maintenance":
+            break
+        case "Contract":
+            break
         default:
             print("\(title) been pressed!")
         }
@@ -149,5 +179,8 @@ class ViewController: UIViewController {
         anotherEntrant.swipe(unit: OfficeDoor())
         anotherEntrant.swipe(unit: CashMachine())
     }
+    
+    // MARK: - Helpers
+    
 }
 

@@ -34,8 +34,8 @@ enum Requirements: CheckParent, CustomStringConvertible {
         case .StreetAddress: return "Street Address"
         case .ZipCode: return "Zip Code"
         case .ManagementTier: return "Management Tier"
-        case .SocialSecurityNumber: return "Social Security Number"
-        case .ProjectNumber: return "Project Number"
+        case .SocialSecurityNumber: return "SSN"
+        case .ProjectNumber: return "Project #"
         case .VendorCompany: return "Vendor Company"
         case .DateOfVisit: return "Date of Visit"
         }

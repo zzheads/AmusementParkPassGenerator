@@ -11,16 +11,16 @@ import Foundation
 // MARK: - Entrant
 
 enum EntrantType: String {
-    case GuestClassic = "Classic Guest"
-    case GuestVip = "VIP Guest"
-    case GuestChild = "Free Child Guest"
-    case EmployeeFood = "Hourly Employee - Food Services"
-    case EmployeeRide = "Hourly Employee - Ride Services"
-    case EmployeeMaintenance = "Hourly Employee - Maintenance"
+    case GuestClassic = "Adult"
+    case GuestVip = "VIP"
+    case GuestChild = "Child"
+    case EmployeeFood = "Food Services"
+    case EmployeeRide = "Ride Services"
+    case EmployeeMaintenance = "Maintenance"
     case Manager = "Manager"
-    case GuestSeasonPass = "Season Pass Guest"
-    case GuestSenior = "Senior Guest"
-    case EmployeeContract = "Contract Employee"
+    case GuestSeasonPass = "Season"
+    case GuestSenior = "Senior"
+    case EmployeeContract = "Contract"
     case Vendor = "Vendor"
 }
 
