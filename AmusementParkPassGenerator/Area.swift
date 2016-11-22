@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Area
 
-enum Area: CustomStringConvertible {
+enum Area: CheckParent, CustomStringConvertible {
     case Amusement
     case Kitchen
     case RideControl

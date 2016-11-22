@@ -11,7 +11,7 @@ import Foundation
 // MARK: - Discount
 
 typealias Percent = Int
-struct Discount: CustomStringConvertible {
+struct Discount: CheckParent, CustomStringConvertible {
     let food: Percent
     let merchant: Percent
     

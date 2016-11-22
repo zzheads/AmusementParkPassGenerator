@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Access
 
-enum Access: CustomStringConvertible {
+enum Access: CheckParent, CustomStringConvertible {
     case AllRides
     case SkipAllRideLines
     

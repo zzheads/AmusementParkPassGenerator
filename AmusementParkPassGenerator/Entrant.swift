@@ -60,12 +60,8 @@ class Entrant: Entrantable {
         self.dateOfVisit = dateOfVisit
     }
         
-    func swipe(unit: CheckUnitType) throws {
-        guard let check = unit.delegate else {
-            throw CheckUnitError.CheckFuncNotAssigned
-        }
-        
-        let result = check(self)
+    func swipe(unit: CheckUnitType) {
+        let result = unit.check(self)
         print(result.message)
     }
 }
@@ -78,7 +74,7 @@ protocol Entrantable: Areable, Accessable, Discountable, Requirementable {
 }
 
 protocol Swiping {
-    func swipe(unit: CheckUnitType) throws
+    func swipe(unit: CheckUnitType)
 }
 
 // MARK: - Entrant helpers

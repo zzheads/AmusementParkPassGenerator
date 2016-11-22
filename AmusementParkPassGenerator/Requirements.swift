@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Requirements
 
-enum Requirements: CustomStringConvertible {
+enum Requirements: CheckParent, CustomStringConvertible {
     case FirstName
     case LastName
     case StreetAddress

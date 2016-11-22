@@ -84,36 +84,7 @@ class ViewController: UIViewController {
         self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.view)
         self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.view)
         
-        
-        let kitchenUnit = Kitchen()
-        let rideTurnstyle = RideTurnstyle()
-        let cash = CashRegister()        
-        
-        let entrant = Entrant(type: .EmployeeContract, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: Date(), managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1002", vendorCompany: "Fedex", dateOfVisit: Date())
-        do {
-                try entrant.checkRequirements()
-        } catch let error {
-            print("Requirement data not entered, try again. Missed \(error).")
-        }
-
-        do {
-            try entrant.swipe(unit: kitchenUnit)
-        } catch let error {
-            print("Check unit \(kitchenUnit) is mailfunctioning, \(error).")
-        }
-
-        
-        do {
-            try entrant.swipe(unit: rideTurnstyle)
-        } catch let error {
-            print("Check unit \(rideTurnstyle) is mailfunctioning, \(error).")
-        }
-
-        do {
-            try entrant.swipe(unit: cash)
-        } catch let error {
-            print("Check unit \(cash) is mailfunctioning, \(error).")
-        }
+        //TestingModel()
     }
 
     override func didReceiveMemoryWarning() {
@@ -154,6 +125,29 @@ class ViewController: UIViewController {
 
     func populateData(sender _: UIButton) {
         print("Populate Data!")
+    }
+    
+    // MARK: - Testing model methods
+    
+    func TestingModel() {
+        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: Date(), managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: Date())
+        let anotherEntrant = Entrant(type: .GuestVip)
+        
+        var ride = RideTurnstyle()
+        entrant.swipe(unit: ride)
+        anotherEntrant.swipe(unit: ride)
+        ride.setDelegate { (entrant) -> (success: Bool, message: String) in
+            let result: (success: Bool, message: String)
+            result.success = true
+            result.message = "Whoops, \(ride.name) is broken (by implementing my own checking method) and passes anybody!"
+            return result
+        }
+        entrant.swipe(unit: ride)
+        
+        entrant.swipe(unit: OfficeDoor())
+        entrant.swipe(unit: CashMachine())
+        anotherEntrant.swipe(unit: OfficeDoor())
+        anotherEntrant.swipe(unit: CashMachine())
     }
 }
 
