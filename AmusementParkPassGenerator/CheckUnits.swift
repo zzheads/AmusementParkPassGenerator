@@ -9,39 +9,61 @@
 import Foundation
 
 protocol CheckUnitType {
-    func check(for entrant: Entrant)
+    var delegate: CheckFunc? { get set }
 }
 
 struct RideTurnstyle: CheckUnitType {
-    func check(for entrant: Entrant) {
+    var delegate: CheckFunc?
+    
+    init() {
+        self.delegate = check(entrant:)
+    }
+    
+    func check(entrant: Entrant) -> (success: Bool, message: String) {
+        let result: (success: Bool, message: String)
         if entrant.access.contains(Access.AllRides) {
-            print("Access to \(self) for \(entrant) is granted!")
+            result.success = true
+            result.message = "Access to \(self) for \(entrant) is granted!"
         } else {
-            print("Access to \(self) for \(entrant) denied!")
+            result.success = false
+            result.message = "Access to \(self) for \(entrant) is denied!"
         }
+        return result
     }
 }
 
 struct Kitchen: CheckUnitType {
-    func check(entrant: Entrant) {
-        switch entrant.type {
-        case .EmployeeContract:
-        case .Vendor:
-        default:
-            if entrant.areas.contains(Area.Kitchen) {
-                print("Access to \(self) for \(entrant) is granted!")
-            } else {
-                print("Access to \(self) for \(entrant) denied!")
-            }
+    var delegate: CheckFunc?
 
+    init() {
+        self.delegate = check(entrant:)
+    }
+    
+    func check(entrant: Entrant) -> (success: Bool, message: String) {
+        let result: (success: Bool, message: String)
+        if entrant.areas.contains(Area.Kitchen) {
+            result.success = true
+            result.message = "Access to \(self) for \(entrant) is granted!"
+        } else {
+            result.success = false
+            result.message = "Access to \(self) for \(entrant) is denied!"
         }
-        
+        return result
     }
 }
 
 struct CashRegister: CheckUnitType {
-    func check(for entrant: Entrant) {
-        print("\(entrant) has \(entrant.discount.food)% discount for food and \(entrant.discount.merchant)% for merchandise")
+    var delegate: CheckFunc?
+
+    init() {
+        self.delegate = check(entrant:)
+    }
+    
+    func check(entrant: Entrant) -> (success: Bool, message: String) {
+        let result: (success: Bool, message: String)
+        result.success = true
+        result.message = "\(entrant) has \(entrant.discount.food)% discount for food and \(entrant.discount.merchant)% for merchandise"
+        return result
     }
 }
 

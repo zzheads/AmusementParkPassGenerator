@@ -83,6 +83,22 @@ class ViewController: UIViewController {
         
         self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.view)
         self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.view)
+        
+        
+        let kitchenUnit = Kitchen()
+        let rideTurnstyle = RideTurnstyle()
+        let cash = CashRegister()
+
+        var entrant: Entrant
+        do {
+            entrant = try Entrant(type: .EmployeeContract, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: Date(), managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1002", vendorCompany: "Fedex", dateOfVisit: Date())
+            entrant.swipe(unit: kitchenUnit)
+            entrant.swipe(unit: rideTurnstyle)
+            entrant.swipe(unit: cash)
+
+        } catch let error {
+            print("\(error)")
+        }
     }
 
     override func didReceiveMemoryWarning() {

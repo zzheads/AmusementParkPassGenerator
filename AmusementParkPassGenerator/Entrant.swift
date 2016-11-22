@@ -24,7 +24,8 @@ enum EntrantType: String {
     case Vendor = "Vendor"
 }
 
-class Entrant: Areable, Accessable, Discountable, Requirementable, CustomStringConvertible {
+typealias CheckFunc = (Entrant) -> (success: Bool, message: String)
+class Entrant: Areable, Accessable, Discountable, Requirementable, Swiping, CustomStringConvertible {
     let type: EntrantType
     
     let firstName: String?
@@ -40,18 +41,17 @@ class Entrant: Areable, Accessable, Discountable, Requirementable, CustomStringC
     let vendorCompany: String?
     let dateOfVisit: Date?
     
-    var projectNumberArea: ProjectNumberArea? {
-        guard let projectNumber = self.projectNumber else {
-            return nil
+    var projectNumberArea: ProjectNumberArea {
+        guard let projectNumber = self.projectNumber, let projectNumberArea = ProjectNumberArea(rawValue: projectNumber) else {
+            return ProjectNumberArea.Nil
         }
-        return ProjectNumberArea(rawValue: projectNumber)
+        return projectNumberArea
     }
     
-    var vendorCompanyArea: VendorCompanyArea? {
-        guard let vendorCompany = self.vendorCompany else {
-            return nil
-        }
-        return VendorCompanyArea(rawValue: vendorCompany)
+    var vendorCompanyArea: VendorCompanyArea {
+        guard let vendorCompany = self.vendorCompany, let vendorCompanyArea = VendorCompanyArea(rawValue: vendorCompany) else {
+            return VendorCompanyArea.Nil        }
+        return vendorCompanyArea
     }
     
     var fullName: String? {
@@ -169,8 +169,14 @@ class Entrant: Areable, Accessable, Discountable, Requirementable, CustomStringC
         return descriptionString // FIXME
     }
     
-    func swipe(for check: CheckUnitType) {
-        check.check(for: self)
+    func swipe(unit: CheckUnitType) {
+        guard let check = unit.delegate else {
+            print("This unit is not working (Assign verify function to delegate)") // FIXME: make error
+            return
+        }
+        
+        let result = check(self)
+        print(result.message)
     }
 }
 
@@ -181,7 +187,7 @@ protocol Entrantable {
 }
 
 protocol Swiping {
-    func swipe()
+    func swipe(unit: CheckUnitType)
 }
 
 // MARK: - Entrant helpers
