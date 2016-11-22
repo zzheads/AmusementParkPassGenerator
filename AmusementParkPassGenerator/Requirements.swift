@@ -44,7 +44,8 @@ enum Requirements: CustomStringConvertible {
 
 // MARK: - Requirements protocols
 
-protocol Requirementable: Entrantable {
+protocol Requirementable {
+    var type: EntrantType { get }
     var requirements: [Requirements] { get }
 }
 
@@ -65,7 +66,7 @@ extension Requirementable {
 
 // MARK: - Requirements Errors
 
-enum EntrantError: Error {
+enum RequirementsError: Error {
     case noFirstName
     case noLastName
     case noStreetAddress

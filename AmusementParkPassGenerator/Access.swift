@@ -24,7 +24,8 @@ enum Access: CustomStringConvertible {
 
 // MARK: - Access protocols
 
-protocol Accessable: Entrantable {
+protocol Accessable {
+    var type: EntrantType { get }
     var access: [Access] { get }
 }
 

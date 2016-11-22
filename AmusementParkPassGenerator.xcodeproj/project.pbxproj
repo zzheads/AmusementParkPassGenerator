@@ -32,6 +32,7 @@
 		A6F3224E1DE449C900B127E4 /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F3224D1DE449C900B127E4 /* Access.swift */; };
 		A6F322501DE44A1200B127E4 /* Discount.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F3224F1DE44A1200B127E4 /* Discount.swift */; };
 		A6F322521DE44A5500B127E4 /* Requirements.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F322511DE44A5500B127E4 /* Requirements.swift */; };
+		A6F322541DE4701200B127E4 /* EntrantExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F322531DE4701200B127E4 /* EntrantExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		A6F3224D1DE449C900B127E4 /* Access.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Access.swift; sourceTree = "<group>"; };
 		A6F3224F1DE44A1200B127E4 /* Discount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discount.swift; sourceTree = "<group>"; };
 		A6F322511DE44A5500B127E4 /* Requirements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Requirements.swift; sourceTree = "<group>"; };
+		A6F322531DE4701200B127E4 /* EntrantExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntrantExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 				A6F3224D1DE449C900B127E4 /* Access.swift */,
 				A6F3224F1DE44A1200B127E4 /* Discount.swift */,
 				A6F322511DE44A5500B127E4 /* Requirements.swift */,
+				A6F322531DE4701200B127E4 /* EntrantExtensions.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				A6839EC21DE1D01C00D98D55 /* MenuBar.swift in Sources */,
 				A63586171DE0854300B561EB /* ViewController.swift in Sources */,
 				A6EDC8261DE0B8560059DEFA /* Colors.swift in Sources */,
+				A6F322541DE4701200B127E4 /* EntrantExtensions.swift in Sources */,
 				A6F3224A1DE41F7600B127E4 /* CheckUnits.swift in Sources */,
 				A643C1801DE2F1E700B9CC8D /* TextField.swift in Sources */,
 				A63586151DE0854300B561EB /* AppDelegate.swift in Sources */,

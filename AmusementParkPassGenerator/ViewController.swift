@@ -87,17 +87,32 @@ class ViewController: UIViewController {
         
         let kitchenUnit = Kitchen()
         let rideTurnstyle = RideTurnstyle()
-        let cash = CashRegister()
-
-        var entrant: Entrant
+        let cash = CashRegister()        
+        
+        let entrant = Entrant(type: .EmployeeContract, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: Date(), managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1002", vendorCompany: "Fedex", dateOfVisit: Date())
         do {
-            entrant = try Entrant(type: .EmployeeContract, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: Date(), managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1002", vendorCompany: "Fedex", dateOfVisit: Date())
-            entrant.swipe(unit: kitchenUnit)
-            entrant.swipe(unit: rideTurnstyle)
-            entrant.swipe(unit: cash)
-
+                try entrant.checkRequirements()
         } catch let error {
-            print("\(error)")
+            print("Requirement data not entered, try again. Missed \(error).")
+        }
+
+        do {
+            try entrant.swipe(unit: kitchenUnit)
+        } catch let error {
+            print("Check unit \(kitchenUnit) is mailfunctioning, \(error).")
+        }
+
+        
+        do {
+            try entrant.swipe(unit: rideTurnstyle)
+        } catch let error {
+            print("Check unit \(rideTurnstyle) is mailfunctioning, \(error).")
+        }
+
+        do {
+            try entrant.swipe(unit: cash)
+        } catch let error {
+            print("Check unit \(cash) is mailfunctioning, \(error).")
         }
     }
 

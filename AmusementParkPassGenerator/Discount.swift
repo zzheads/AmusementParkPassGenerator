@@ -22,7 +22,8 @@ struct Discount: CustomStringConvertible {
 
 // MARK: - Discount protocols
 
-protocol Discountable: Entrantable {
+protocol Discountable {
+    var type: EntrantType { get }
     var discount: Discount { get }
 }
 

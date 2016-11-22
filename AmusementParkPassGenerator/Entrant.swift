@@ -24,8 +24,9 @@ enum EntrantType: String {
     case Vendor = "Vendor"
 }
 
-typealias CheckFunc = (Entrant) -> (success: Bool, message: String)
-class Entrant: Areable, Accessable, Discountable, Requirementable, Swiping, CustomStringConvertible {
+typealias CheckFunc = (Entrantable) -> (success: Bool, message: String)
+
+class Entrant: Entrantable {
     let type: EntrantType
     
     let firstName: String?
@@ -41,55 +42,8 @@ class Entrant: Areable, Accessable, Discountable, Requirementable, Swiping, Cust
     let vendorCompany: String?
     let dateOfVisit: Date?
     
-    var projectNumberArea: ProjectNumberArea {
-        guard let projectNumber = self.projectNumber, let projectNumberArea = ProjectNumberArea(rawValue: projectNumber) else {
-            return ProjectNumberArea.Nil
-        }
-        return projectNumberArea
-    }
     
-    var vendorCompanyArea: VendorCompanyArea {
-        guard let vendorCompany = self.vendorCompany, let vendorCompanyArea = VendorCompanyArea(rawValue: vendorCompany) else {
-            return VendorCompanyArea.Nil        }
-        return vendorCompanyArea
-    }
-    
-    var fullName: String? {
-        if let firstName = self.firstName {
-            if let lastName = self.lastName {
-                return "\(firstName) \(lastName)"
-            } else {
-                return "\(firstName)"
-            }
-        }
-        if let lastName = self.lastName {
-            return "\(lastName)"
-        }
-        return nil
-    }
-    
-    var address: String? {
-        var address: String = ""
-        if let streetAddress = self.streetAddress {
-            address += streetAddress + ", "
-        }
-        if let city = self.city {
-            address += city + ", "
-        }
-        if let state = self.state {
-            address += state + ", "
-        }
-        if let zipCode = self.zipCode {
-            address += zipCode
-        }
-        if address.characters.count > 0 {
-            return address
-        } else {
-            return nil
-        }
-    }
-    
-    init(type: EntrantType, firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, dateOfBirth: Date? = nil, managementTier: String? = nil, socialSecurityNumber: String? = nil, projectNumber: String? = nil, vendorCompany: String? = nil, dateOfVisit: Date? = nil) throws {
+    init(type: EntrantType, firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, dateOfBirth: Date? = nil, managementTier: String? = nil, socialSecurityNumber: String? = nil, projectNumber: String? = nil, vendorCompany: String? = nil, dateOfVisit: Date? = nil) {
         self.type = type
         
         self.firstName = firstName
@@ -104,75 +58,11 @@ class Entrant: Areable, Accessable, Discountable, Requirementable, Swiping, Cust
         self.projectNumber = projectNumber
         self.vendorCompany = vendorCompany
         self.dateOfVisit = dateOfVisit
+    }
         
-        if self.requirements.contains(.FirstName) && firstName == nil {
-            throw EntrantError.noFirstName
-        }
-        if self.requirements.contains(.LastName) && lastName == nil {
-            throw EntrantError.noLastName
-        }
-        if self.requirements.contains(.StreetAddress) && streetAddress == nil {
-            throw EntrantError.noStreetAddress
-        }
-        if self.requirements.contains(.City) && city == nil {
-            throw EntrantError.noCity
-        }
-        if self.requirements.contains(.State) && state == nil {
-            throw EntrantError.noState
-        }
-        if self.requirements.contains(.ZipCode) && zipCode == nil {
-            throw EntrantError.noZipCode
-        }
-        if self.requirements.contains(.DateOfBirth) && dateOfBirth == nil {
-            throw EntrantError.noDateOfBirth
-        }
-        if self.requirements.contains(.ManagementTier) && managementTier == nil {
-            throw EntrantError.noManagementTier
-        }
-        if self.requirements.contains(.SocialSecurityNumber) && socialSecurityNumber == nil {
-            throw EntrantError.noSocialSecurityNumber
-        }
-        if self.requirements.contains(.ProjectNumber) && projectNumber == nil {
-            throw EntrantError.noProjectNumber
-        }
-        if self.requirements.contains(.VendorCompany) && vendorCompany == nil {
-            throw EntrantError.noVendorCompany
-        }
-        if self.requirements.contains(.DateOfVisit) && dateOfVisit == nil {
-            throw EntrantError.noDateOfVisit
-        }
-    }
-    
-    var description: String {
-        var descriptionString: String = "Type: \(self.type.rawValue), "
-        if let fullName = self.fullName {
-            descriptionString += "Name: \(fullName), "
-        }
-        if let address = self.address {
-            descriptionString += "Address: \(address), "
-        }
-        if let date = self.dateOfBirth {
-            descriptionString += "Born: \(date.toString)"
-        }
-        if let management = self.managementTier {
-            descriptionString += "Tier: \(management)"
-        }
-        if let socialSecurityNumber = self.socialSecurityNumber {
-            descriptionString += "SSN: \(socialSecurityNumber)"
-        }
-        if let vendorCompany = self.vendorCompany {
-            descriptionString += "Company: \(vendorCompany)"
-        }
-        if let dateOfVisit = self.dateOfVisit {
-            descriptionString += "Date of Visit: \(dateOfVisit.toString)"
-        }
-        return descriptionString // FIXME
-    }
-    
-    func swipe(unit: CheckUnitType) {
+    func swipe(unit: CheckUnitType) throws {
         guard let check = unit.delegate else {
-            print("This unit is not working (Assign verify function to delegate)") // FIXME: make error
-            return
+            throw CheckUnitError.CheckFuncNotAssigned
         }
         
         let result = check(self)
@@ -182,12 +72,13 @@ class Entrant: Areable, Accessable, Discountable, Requirementable, Swiping, Cust
 
 // MARK: - Entrant protocols
 
-protocol Entrantable {
+protocol Entrantable: Areable, Accessable, Discountable, Requirementable {
     var type: EntrantType { get }
+    var name: String { get }
 }
 
 protocol Swiping {
-    func swipe(unit: CheckUnitType)
+    func swipe(unit: CheckUnitType) throws
 }
 
 // MARK: - Entrant helpers
@@ -199,7 +90,6 @@ extension Date {
         return dateFormatter.string(from: self)
     }
 }
-
 
 
 

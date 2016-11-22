@@ -76,9 +76,12 @@ enum VendorCompanyArea: String {
 
 // MARK: - Area protocols
 
-protocol Areable: Entrantable {
+protocol Areable {
+    var type: EntrantType { get }
     var areas: [Area] { get }
+    var projectNumber: String? { get }
     var projectNumberArea: ProjectNumberArea { get }
+    var vendorCompany: String? { get }
     var vendorCompanyArea: VendorCompanyArea { get }
 }
 
@@ -93,5 +96,18 @@ extension Areable {
         case .EmployeeContract:                                                         return self.projectNumberArea.areas
         case .Vendor:                                                                   return self.vendorCompanyArea.areas
         }
+    }
+    
+    var projectNumberArea: ProjectNumberArea {
+        guard let projectNumber = self.projectNumber, let projectNumberArea = ProjectNumberArea(rawValue: projectNumber) else {
+            return ProjectNumberArea.Nil
+        }
+        return projectNumberArea
+    }
+    
+    var vendorCompanyArea: VendorCompanyArea {
+        guard let vendorCompany = self.vendorCompany, let vendorCompanyArea = VendorCompanyArea(rawValue: vendorCompany) else {
+            return VendorCompanyArea.Nil        }
+        return vendorCompanyArea
     }
 }
