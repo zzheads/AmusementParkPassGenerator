@@ -40,8 +40,18 @@ class Entrant: Areable, Accessable, Discountable, Requirementable, CustomStringC
     let vendorCompany: String?
     let dateOfVisit: Date?
     
-    var projectNumberArea: ProjectNumberArea {
-        ProjectNumberArea
+    var projectNumberArea: ProjectNumberArea? {
+        guard let projectNumber = self.projectNumber else {
+            return nil
+        }
+        return ProjectNumberArea(rawValue: projectNumber)
+    }
+    
+    var vendorCompanyArea: VendorCompanyArea? {
+        guard let vendorCompany = self.vendorCompany else {
+            return nil
+        }
+        return VendorCompanyArea(rawValue: vendorCompany)
     }
     
     var fullName: String? {

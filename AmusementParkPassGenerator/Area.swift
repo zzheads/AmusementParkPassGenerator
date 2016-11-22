@@ -40,6 +40,7 @@ enum ProjectNumberArea: String {
     case Project_1003 = "1003"
     case Project_2001 = "2001"
     case Project_2002 = "2002"
+    case Default = "All other contract employees, not in this list"
     
     var areas: [Area] {
         switch self {
@@ -48,17 +49,8 @@ enum ProjectNumberArea: String {
         case .Project_1003: return [.Amusement, .RideControl, .Maintenance, .Kitchen, .Office]
         case .Project_2001: return [.Office]
         case .Project_2002: return [.Maintenance, .Kitchen]
+        default:            return [.Amusement, .Kitchen]
         }
-    }
-    
-    var dictionary: [String: ProjectNumberArea] {
-        return [
-            ProjectNumberArea.Project_1001.rawValue: ProjectNumberArea.Project_1001,
-            ProjectNumberArea.Project_1002.rawValue: ProjectNumberArea.Project_1002,
-            ProjectNumberArea.Project_1003.rawValue: ProjectNumberArea.Project_1003,
-            ProjectNumberArea.Project_2001.rawValue: ProjectNumberArea.Project_2001,
-            ProjectNumberArea.Project_2002.rawValue: ProjectNumberArea.Project_2002
-        ]
     }
 }
 
@@ -69,6 +61,7 @@ enum VendorCompanyArea: String {
     case Orkin = "Orkin"
     case Fedex = "Fedex"
     case NWElectrical = "NW Electrical"
+    case Default = "All other vendors, not in this list"
     
     var areas: [Area] {
         switch self {
@@ -76,16 +69,8 @@ enum VendorCompanyArea: String {
         case .Orkin:            return [.Amusement, .RideControl, .Kitchen]
         case .Fedex:            return [.Maintenance, .Office]
         case .NWElectrical:     return [.Amusement, .RideControl, .Maintenance, .Kitchen, .Office]
+        default:                return [.Amusement, .Kitchen]
         }
-    }
-    
-    var dictionary: [String: VendorCompanyArea] {
-        return [
-            VendorCompanyArea.Acme.rawValue: VendorCompanyArea.Acme,
-            VendorCompanyArea.Orkin.rawValue: VendorCompanyArea.Orkin,
-            VendorCompanyArea.Fedex.rawValue: VendorCompanyArea.Fedex,
-            VendorCompanyArea.NWElectrical.rawValue: VendorCompanyArea.NWElectrical,
-        ]
     }
 }
 
@@ -93,6 +78,8 @@ enum VendorCompanyArea: String {
 
 protocol Areable: Entrantable {
     var areas: [Area] { get }
+    var projectNumberArea: ProjectNumberArea? { get }
+    var vendorCompanyArea: VendorCompanyArea? { get }
 }
 
 extension Areable {
@@ -103,8 +90,18 @@ extension Areable {
         case .EmployeeRide:                                                             return [.Amusement, .RideControl]
         case .EmployeeMaintenance:                                                      return [.Amusement, .Kitchen, .RideControl, .Maintenance]
         case .Manager:                                                                  return [.Amusement, .Kitchen, .RideControl, .Maintenance, .Office]
-        case .EmployeeContract:                                                         return [.DependOnProjectNumber]
-        case .Vendor:                                                                   return [.DependOnVendorCompany]
+        case .EmployeeContract:
+            if let projectNumberArea = self.projectNumberArea {
+                return projectNumberArea.areas
+            } else {
+                return ProjectNumberArea.Default.areas
+            }
+        case .Vendor:
+            if let vendorCompanyArea = self.vendorCompanyArea {
+                return vendorCompanyArea.areas
+            } else {
+                return VendorCompanyArea.Default.areas
+            }
         }
     }
 }
