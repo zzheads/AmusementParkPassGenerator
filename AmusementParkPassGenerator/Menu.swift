@@ -20,9 +20,9 @@ extension UIButton {
         
         // calc width
         let width: CGFloat = (UIScreen.main.bounds.size.width - 40) / CGFloat(number)
-        var height: CGFloat = 60
+        var height: CGFloat = CGFloat(ViewController.marginY * ViewController.heightTopMenuInMargins)
         if navBar == MenuBars.Bottom {
-            height = 45
+            height = CGFloat(ViewController.marginY * ViewController.heightBottomMenuInMargins)
         }
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

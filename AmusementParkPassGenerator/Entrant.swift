@@ -24,44 +24,36 @@ enum EntrantType: String {
     case Vendor = "Vendor"
 }
 
-typealias CheckFunc = (Entrantable) -> (success: Bool, message: String)
+typealias EntrantInfo = [Requirements: String?]
 
 class Entrant: Entrantable {
     let type: EntrantType
-    
-    let firstName: String?
-    let lastName: String?
-    let streetAddress: String?
-    let city: String?
-    let state: String?
-    let zipCode: String?
-    let dateOfBirth: String?
-    let managementTier: String?
-    let socialSecurityNumber: String?
-    let projectNumber: String?
-    let vendorCompany: String?
-    let dateOfVisit: String?
-    
+    var info: EntrantInfo = [:]
     
     init(type: EntrantType, firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, dateOfBirth: String? = nil, managementTier: String? = nil, socialSecurityNumber: String? = nil, projectNumber: String? = nil, vendorCompany: String? = nil, dateOfVisit: String? = nil) {
         self.type = type
         
-        self.firstName = firstName
-        self.lastName = lastName
-        self.streetAddress = streetAddress
-        self.city = city
-        self.state = state
-        self.zipCode = zipCode
-        self.dateOfBirth = dateOfBirth
-        self.managementTier = managementTier
-        self.socialSecurityNumber = socialSecurityNumber
-        self.projectNumber = projectNumber
-        self.vendorCompany = vendorCompany
-        self.dateOfVisit = dateOfVisit
+        info.updateValue(firstName,             forKey: .FirstName)
+        info.updateValue(lastName,              forKey: .LastName)
+        info.updateValue(streetAddress,         forKey: .StreetAddress)
+        info.updateValue(city,                  forKey: .City)
+        info.updateValue(state,                 forKey: .State)
+        info.updateValue(zipCode,               forKey: .ZipCode)
+        info.updateValue(dateOfBirth,           forKey: .DateOfBirth)
+        info.updateValue(managementTier,        forKey: .ManagementTier)
+        info.updateValue(socialSecurityNumber,  forKey: .SocialSecurityNumber)
+        info.updateValue(projectNumber,         forKey: .ProjectNumber)
+        info.updateValue(vendorCompany,         forKey: .VendorCompany)
+        info.updateValue(dateOfVisit,           forKey: .DateOfVisit)
     }
         
     func swipe(unit: CheckUnitType) {
         let result = unit.check(self)
+        if (result.success) {
+            Sound.AccessGranted.play()
+        } else {
+            Sound.AccessDenied.play()
+        }
         print(result.message)
     }
 }

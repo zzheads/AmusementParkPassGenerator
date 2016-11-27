@@ -78,10 +78,9 @@ enum VendorCompanyArea: String {
 
 protocol Areable {
     var type: EntrantType { get }
+    var info: EntrantInfo { get set }
     var areas: [Area] { get }
-    var projectNumber: String? { get }
     var projectNumberArea: ProjectNumberArea { get }
-    var vendorCompany: String? { get }
     var vendorCompanyArea: VendorCompanyArea { get }
 }
 
@@ -99,14 +98,14 @@ extension Areable {
     }
     
     var projectNumberArea: ProjectNumberArea {
-        guard let projectNumber = self.projectNumber, let projectNumberArea = ProjectNumberArea(rawValue: projectNumber) else {
+        guard let project = self.info[.ProjectNumber], let projectNumber = project, let projectNumberArea = ProjectNumberArea(rawValue: projectNumber) else {
             return ProjectNumberArea.Nil
         }
         return projectNumberArea
     }
     
     var vendorCompanyArea: VendorCompanyArea {
-        guard let vendorCompany = self.vendorCompany, let vendorCompanyArea = VendorCompanyArea(rawValue: vendorCompany) else {
+        guard let company = self.info[.VendorCompany], let vendorCompany = company, let vendorCompanyArea = VendorCompanyArea(rawValue: vendorCompany) else {
             return VendorCompanyArea.Nil        }
         return vendorCompanyArea
     }

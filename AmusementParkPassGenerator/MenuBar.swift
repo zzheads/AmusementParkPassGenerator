@@ -12,21 +12,20 @@ enum MenuBars {
     case Top
     case Bottom
     
-
-    var marginY: Int {
-        return 20
+    var marginY: CGFloat {
+        return CGFloat(ViewController.marginY)
     }
     
-    var height: Int {
+    var height: CGFloat {
         switch self {
         case .Top:
-            return 60
+            return CGFloat(ViewController.marginY * ViewController.heightTopMenuInMargins)
         case .Bottom:
-            return 45
+            return CGFloat(ViewController.marginY * ViewController.heightBottomMenuInMargins)
         }
     }
     
-    var originY: Int {
+    var originY: CGFloat {
         switch self {
         case .Top:
             return marginY
@@ -47,7 +46,7 @@ enum MenuBars {
 
 class MenuBar: UIView {
     init(menuBar: MenuBars) {
-        let frame = CGRect(x: 0, y: menuBar.originY, width: Int(UIScreen.main.bounds.size.width), height: menuBar.height)
+        let frame = CGRect(x: 0, y: Int(menuBar.originY), width: Int(UIScreen.main.bounds.size.width), height: Int(menuBar.height))
         super.init(frame: frame)
         self.backgroundColor = menuBar.color
     }

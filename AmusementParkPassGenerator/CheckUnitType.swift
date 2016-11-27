@@ -8,6 +8,9 @@
 
 import Foundation
 
+typealias CheckResult = (success: Bool, message: String)
+typealias CheckFunc = (Entrantable) -> CheckResult
+
 protocol CheckParent {
     // Silence is golden
 }
@@ -38,21 +41,30 @@ extension CheckUnitType {
         }
     }
     
-    func defaultCheck(entrant: Entrantable) -> (success: Bool, message: String) {
-        var result: (success: Bool, message: String) = (success: false, message: "Any checks was not implemented into \(self.name)")
+    // Default checking function, will have every CheckUnit, 
+    // can be changed for own checking method by setting delegate
+    func defaultCheck(entrant: Entrantable) -> CheckResult {
+        var result: CheckResult = (success: false, message: "Any checks was not implemented into \(self.name)")
         guard let checkRole = self.checkRole else {
+            result.message = "Checking role is not set for \(self.name)!"
             return result
         }
+        
+        // Case CheckUnit is checking Area
         if type(of: checkRole) == Area.self {
             result.success = entrant.areas.contains(checkRole as! Area)
             result.message = result.success ? "Access to \(self.name) area for \(entrant.name) is GRANTED!" : "Access to \(self.name) area for \(entrant.name) is DENIED!"
             return result
         }
+
+        // Case CheckUnit is checking Access
         if type(of: checkRole) == Access.self {
             result.success = entrant.access.contains(checkRole as! Access)
             result.message = result.success ? "Access to \(self.name) for \(entrant.name) is GRANTED!" : "Access to \(self.name) for \(entrant.name) is DENIED!"
             return result
         }
+        
+        // Case CheckUnit is checking Discount
         if type(of: checkRole) == Discount.self {
             if entrant.discount.food != 0 || entrant.discount.merchant != 0 {
                 result.success = true
@@ -63,6 +75,8 @@ extension CheckUnitType {
             }
             return result
         }
+        
+        // Case CheckUnit is checking Requirements
         if type(of: checkRole) == Requirements.self {
             result.success = entrant.requirements.contains(checkRole as! Requirements)
             result.message = result.success ? "Requirements of \(self.name) are INCLUDED in requirements to \(entrant.name)" : "Requirements of \(self.name) are NOT INCLUDED in requirements to \(entrant.name)"

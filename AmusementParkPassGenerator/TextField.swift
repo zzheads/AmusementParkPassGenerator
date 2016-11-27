@@ -29,26 +29,25 @@ enum TextFieldState {
 typealias TextFieldDesc = (posX: Int, totalX: Int, posY: Int, totalY: Int, title: String, isEditable: TextFieldState, placeholder: String?)
 
 class TextField: UITextField {
-    static var offsetX: Int {
-        return Int(Double(TextField.marginX) * 1.25)
+    static var offsetX: CGFloat {
+        return marginX * 1.25
     }
-    static var offsetY: Int {
-        return MenuBars.Top.marginY + MenuBars.Top.height + MenuBars.Bottom.height
+    static var offsetY: CGFloat {
+        return MenuBars.Top.height + MenuBars.Bottom.height + TextField.marginY * 1.5
     }
-    static var offsetYFromBottom: Int {
-        return Int(UIScreen.main.bounds.size.height) - ActionButtons.GeneratePass.y + MenuBars.Top.marginY * 2
+    static var offsetYFromBottom: CGFloat {
+        return ViewController.offsetFromBottom + ActionButtons.GeneratePass.height
     }
-    static var marginX: Int {
-        return Int(UIScreen.main.bounds.size.width / 28)      // width of text field depends of row, is 8 * marginX where 3 text field in the row
+    static var marginX: CGFloat {
+        return ViewController.marginX      // width of text field depends of row, is 8 * marginX where 3 text field in the row
     }
-    static var marginY: Int {
-        return Int((Int(UIScreen.main.bounds.size.height) - offsetY - offsetYFromBottom) / 25)     // height of text field is 2 * marginY
+    static var marginY: CGFloat {
+        return ViewController.marginY
     }
-    static var height: Int {
-        return TextField.marginY * 2
+    static var height: CGFloat {
+        return TextField.marginY * ViewController.heightTextFieldInMargins
     }
 
-    
     let label: UILabel?
     let line: HorizontalLine
     var isEditable: TextFieldState {
@@ -73,20 +72,24 @@ class TextField: UITextField {
     // positionY - total number of the rows WHITH text fields (!)
     // will calculate Rect with this information, plus know offset from Y (from MenuBars)
     init(positionX: Int, totalX: Int, positionY: Int, totalY: Int, isEditable: TextFieldState = .Disabled, label: String? = nil, placeholder: String? = nil) {
-        let width = (27 * TextField.marginX) / totalX - TextField.marginX
-        let x = TextField.offsetX + (width + TextField.marginX) * positionX
-        let y = TextField.offsetY + TextField.marginY * 2 + (TextField.marginY * 5) * positionY
-        let rect = CGRect(x: x, y: y, width: width, height: TextField.height)
+        
+        let width = (27 * TextField.marginX) / CGFloat(totalX) - TextField.marginX
+        let x = TextField.offsetX + (width + TextField.marginX) * CGFloat(positionX)
+        let y = TextField.offsetY + TextField.height * CGFloat(positionY)
+        let rect = CGRect(x: x, y: y + TextField.height / 4, width: width, height: TextField.height / 2)
+        
         self.isEditable = .Disabled
+        
         if let label = label {
-            let labelRect = CGRect(x: x, y: y - Int(Double(TextField.marginY) * 1.2), width: width, height: TextField.marginY)
+            let labelRect = CGRect(x: x, y: y, width: width, height: TextField.height / 4)
             self.label = UILabel(frame: labelRect)
             self.label?.text = label
             self.label?.font = UIFont.boldSystemFont(ofSize: 16)
         } else {
             self.label = nil
         }
-        line = HorizontalLine(xStart: 0, xEnd: Int(UIScreen.main.bounds.size.width), y: y + Int(Double(TextField.marginY) * 3), color: AppColor.GrayHalfTransparent.rawValue)
+        
+        line = HorizontalLine(xStart: 0, xEnd: Int(UIScreen.main.bounds.size.width), y: Int(y + TextField.height * 3.5 / 4), color: AppColor.GrayHalfTransparent.rawValue)
         super.init(frame: rect)
 
         let paddingRect = CGRect(x: 0, y: 0, width: 15, height: self.frame.height)

@@ -22,14 +22,17 @@ extension Entrant: CustomStringConvertible {
     }
     
     var fullName: String? {
-        if let firstName = self.firstName {
-            if let lastName = self.lastName {
+        let firstName = self.info[.FirstName]!
+        let lastName = self.info[.LastName]!
+        
+        if let firstName = firstName {
+            if let lastName = lastName {
                 return "\(firstName) \(lastName)"
             } else {
                 return "\(firstName)"
             }
         }
-        if let lastName = self.lastName {
+        if let lastName = lastName {
             return "\(lastName)"
         }
         return nil
@@ -37,19 +40,19 @@ extension Entrant: CustomStringConvertible {
 
     var address: String? {
         var address: String = ""
-        if let streetAddress = self.streetAddress {
-            address += streetAddress + ", "
+        if let streetAddress = self.info[.StreetAddress]! {
+            address += "\(streetAddress), "
         }
-        if let city = self.city {
-            address += city + ", "
+        if let city = self.info[.City]! {
+            address += "\(city), "
         }
-        if let state = self.state {
-            address += state + ", "
+        if let state = self.info[.State]! {
+            address += "\(state), "
         }
-        if let zipCode = self.zipCode {
-            address += zipCode
+        if let zipCode = self.info[.ZipCode]! {
+            address += "\(zipCode)"
         }
-        if address.characters.count > 0 {
+        if !address.isEmpty {
             return address
         } else {
             return nil
@@ -64,22 +67,22 @@ extension Entrant: CustomStringConvertible {
         if let address = self.address {
             descriptionString += "Address: \(address), "
         }
-        if let date = self.dateOfBirth {
+        if let date = self.info[.DateOfBirth]! {
             descriptionString += "Born: \(date), "
         }
-        if let management = self.managementTier {
+        if let management = self.info[.ManagementTier]! {
             descriptionString += "Tier: \(management), "
         }
-        if let projectNumber = self.projectNumber {
+        if let projectNumber = self.info[.ProjectNumber]! {
             descriptionString += "Project#: \(projectNumber), "
         }
-        if let socialSecurityNumber = self.socialSecurityNumber {
+        if let socialSecurityNumber = self.info[.SocialSecurityNumber]! {
             descriptionString += "SSN: \(socialSecurityNumber), "
         }
-        if let vendorCompany = self.vendorCompany {
+        if let vendorCompany = self.info[.VendorCompany]! {
             descriptionString += "Company: \(vendorCompany), "
         }
-        if let dateOfVisit = self.dateOfVisit {
+        if let dateOfVisit = self.info[.DateOfVisit]! {
             descriptionString += "Date of Visit: \(dateOfVisit), "
         }
         return descriptionString
@@ -87,23 +90,9 @@ extension Entrant: CustomStringConvertible {
 }
 
 extension Entrant {
+    
     func checkRequirements() throws {
-        let dict: [Requirements: String?] = [
-            Requirements.FirstName              : self.firstName,
-            Requirements.LastName               : self.lastName,
-            Requirements.StreetAddress          : self.streetAddress,
-            Requirements.City                   : self.city,
-            Requirements.State                  : self.state,
-            Requirements.ZipCode                : self.zipCode,
-            Requirements.DateOfBirth            : self.dateOfBirth,
-            Requirements.DateOfVisit            : self.dateOfVisit,
-            Requirements.SocialSecurityNumber   : self.socialSecurityNumber,
-            Requirements.ProjectNumber          : self.projectNumber,
-            Requirements.ManagementTier         : self.managementTier,
-            Requirements.VendorCompany          : self.vendorCompany
-        ]
-        
-        for (key, value) in dict {
+        for (key, value) in self.info {
             if self.requirements.contains(key) {
                 if let value = value {
                     if value.isEmpty {

@@ -10,8 +10,46 @@ import UIKit
 import CoreGraphics
 
 class ViewController: UIViewController {
+    
+    var genPassButton: UIButton = UIButton(type: .system)
+    var popDataButton: UIButton = UIButton(type: .system)
+    
+    static var offsetFromBottom: CGFloat = 10
+    static var totalHeight: CGFloat {
+        return CGFloat(UIScreen.main.bounds.size.height - offsetFromBottom)
+    }
+    static var numberOfTextFields: CGFloat {
+        return CGFloat(self.textFieldsTitles[0].totalY)
+    }
+    static let heightTopMenuInMargins: CGFloat = 3.0
+    static let heightBottomMenuInMargins: CGFloat = 2
+    static let heightTextFieldInMargins: CGFloat = 5.0
+    static let heightButtonInMargins: CGFloat = 3.0
+    static var totalMargins: CGFloat {
+        return heightTopMenuInMargins + heightBottomMenuInMargins + heightTextFieldInMargins * numberOfTextFields + heightButtonInMargins
+    }
+    static var marginY: CGFloat {
+        return totalHeight / (totalMargins + 2)
+    }
+    static var marginX: CGFloat {
+        return UIScreen.main.bounds.size.width / 28      // width of text field depends of row, is 8 * marginX where 3 text field in the row
+    }
 
-    @IBOutlet weak var scrollView: UIScrollView!
+    static let textFieldsTitles: [TextFieldDesc] = [
+        (posX: 0, totalX: 3, posY: 0, totalY: 5, title: "Date of Birth", isEditable: .Disabled,placeholder: "MM/DD/YYYY"),
+        (posX: 1, totalX: 3, posY: 0, totalY: 5, title: "SSN", isEditable: .Disabled, placeholder: "###-##-####"),
+        (posX: 2, totalX: 3, posY: 0, totalY: 5, title: "Project #", isEditable: .Disabled, placeholder: "#######"),
+        (posX: 0, totalX: 2, posY: 1, totalY: 5, title: "First Name", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 2, posY: 1, totalY: 5, title: "Last Name", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 2, posY: 2, totalY: 5, title: "Company", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 2, posY: 2, totalY: 5, title: "Management Tier", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 2, posY: 3, totalY: 5, title: "Street Address", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 2, posY: 3, totalY: 5, title: "City", isEditable: .Disabled, placeholder: nil),
+        (posX: 0, totalX: 3, posY: 4, totalY: 5, title: "State", isEditable: .Disabled, placeholder: nil),
+        (posX: 1, totalX: 3, posY: 4, totalY: 5, title: "Zip Code", isEditable: .Disabled, placeholder: nil),
+        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Date of Visit", isEditable: .Disabled, placeholder: "MM/DD/YYYY"),
+        ]
+    var textFields: [TextField] = []
     
     let mainMenuBar = MenuBar(menuBar: .Top)
     let guestMenuBar = MenuBar(menuBar: .Bottom)
@@ -35,27 +73,10 @@ class ViewController: UIViewController {
             activeMenuBar.isHidden = false
         }
     }
-
     
     let topMenuTitles = ["Guest", "Employee", "Manager", "Vendor"]
     let guestMenuTitles = ["Child", "Adult", "Senior", "VIP", "Season"]
     let employeeMenuTitles = ["Food Services", "Ride Services", "Maintenance", "Contract"]
-    
-    let textFieldsTitles: [TextFieldDesc] = [
-        (posX: 0, totalX: 3, posY: 0, totalY: 5, title: "Date of Birth", isEditable: .Disabled,placeholder: "MM/DD/YYYY"),
-        (posX: 1, totalX: 3, posY: 0, totalY: 5, title: "SSN", isEditable: .Disabled, placeholder: "###-##-####"),
-        (posX: 2, totalX: 3, posY: 0, totalY: 5, title: "Project #", isEditable: .Disabled, placeholder: "#######"),
-        (posX: 0, totalX: 2, posY: 1, totalY: 5, title: "First Name", isEditable: .Disabled, placeholder: nil),
-        (posX: 1, totalX: 2, posY: 1, totalY: 5, title: "Last Name", isEditable: .Disabled, placeholder: nil),
-        (posX: 0, totalX: 2, posY: 2, totalY: 5, title: "Company", isEditable: .Disabled, placeholder: nil),
-        (posX: 1, totalX: 2, posY: 2, totalY: 5, title: "Management Tier", isEditable: .Disabled, placeholder: nil),
-        (posX: 0, totalX: 2, posY: 3, totalY: 5, title: "Street Address", isEditable: .Disabled, placeholder: nil),
-        (posX: 1, totalX: 2, posY: 3, totalY: 5, title: "City", isEditable: .Disabled, placeholder: nil),
-        (posX: 0, totalX: 3, posY: 4, totalY: 5, title: "State", isEditable: .Disabled, placeholder: nil),
-        (posX: 1, totalX: 3, posY: 4, totalY: 5, title: "Zip Code", isEditable: .Disabled, placeholder: nil),
-        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Date of Visit", isEditable: .Disabled, placeholder: "MM/DD/YYYY"),
-    ]
-    var textFields: [TextField] = []
     
     var topMenu: [MenuButton] = []
     var guestMenu: [MenuButton] = []
@@ -63,32 +84,35 @@ class ViewController: UIViewController {
     
     var wasSelected: UIButton?
     
-    var genPassButton: UIButton?
-    var popDataButton: UIButton?
-        
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         
-        self.scrollView.addSubview(mainMenuBar)
-        self.scrollView.addSubview(guestMenuBar)
-        self.scrollView.addSubview(employeeMenuBar)
-        self.scrollView.addSubview(emptyMenuBar)
+        genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass), parentView: self.view)
+        popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData), parentView: self.view)
+        
+        self.view.addSubview(mainMenuBar)
+        self.view.addSubview(guestMenuBar)
+        self.view.addSubview(employeeMenuBar)
+        self.view.addSubview(emptyMenuBar)
         self.activeMenuBar = emptyMenuBar
 
         self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: topMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: guestMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: employeeMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         
-        for desc in textFieldsTitles {
+//        let tf = TextField(positionX: 0, totalX: 2, positionY: 0, totalY: 0, isEditable: .Disabled, label: "Test", placeholder: "Test")
+//        tf.appendTo(view: self.view)
+        
+        for desc in ViewController.textFieldsTitles {
             let textField = TextField(textFieldDesc: desc)
             self.textFields.append(textField)
-            textField.appendTo(view: self.scrollView)
+            textField.appendTo(view: self.view)
         }
         
-        self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass(sender:)), parentView: self.scrollView)
-        self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData(sender:)), parentView: self.scrollView)
         
-        //TestingModel()
+        TestingModel()
     }
 
     override func didReceiveMemoryWarning() {
@@ -138,7 +162,6 @@ class ViewController: UIViewController {
         print("Generate pass!")
         
         guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
-            print("wasSelected: \(self.wasSelected), title: \(self.wasSelected?.currentTitle), type: \(EntrantType(rawValue: (self.wasSelected?.currentTitle)!))")
             return
         }
         let firstName = self.textFields.findByLabel(label: "First Name")?.text
@@ -193,6 +216,73 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Helpers
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo, let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardFrame = keyboardFrameValue.cgRectValue
+            let height = keyboardFrame.height
+            UIView.animate(withDuration: 0.8) {
+                
+                self.genPassButton.removeFromSuperview()
+                self.popDataButton.removeFromSuperview()
+                
+                self.mainMenuBar.removeFromSuperview()
+                self.guestMenuBar.removeFromSuperview()
+                self.employeeMenuBar.removeFromSuperview()
+                self.emptyMenuBar.removeFromSuperview()
+                for button in self.topMenu {
+                    button.button.removeFromSuperview()
+                }
+                for button in self.guestMenu {
+                    button.button.removeFromSuperview()
+                }
+                for button in self.employeeMenu {
+                    button.button.removeFromSuperview()
+                }
+                
+                for textField in self.textFields {
+                    if let label = textField.label {
+                        label.removeFromSuperview()
+                    }
+                    textField.line.removeFromSuperview()
+                    textField.removeFromSuperview()
+                }
+                
+                ViewController.offsetFromBottom += height
+                
+                self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(self.generatePass), parentView: self.view)
+                self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(self.populateData), parentView: self.view)
+                
+                self.view.addSubview(self.mainMenuBar)
+                self.view.addSubview(self.guestMenuBar)
+                self.view.addSubview(self.employeeMenuBar)
+                self.view.addSubview(self.emptyMenuBar)
+                self.activeMenuBar = self.emptyMenuBar
+                
+                self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: self.topMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
+                self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: self.guestMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
+                self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: self.employeeMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
+                
+                //        let tf = TextField(positionX: 0, totalX: 2, positionY: 0, totalY: 0, isEditable: .Disabled, label: "Test", placeholder: "Test")
+                //        tf.appendTo(view: self.view)
+                
+                for desc in ViewController.textFieldsTitles {
+                    let textField = TextField(textFieldDesc: desc)
+                    self.textFields.append(textField)
+                    textField.appendTo(view: self.view)
+                }
+
+                
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.8) {
+            self.view.layoutIfNeeded()
+        }
+    }
     
 }
 

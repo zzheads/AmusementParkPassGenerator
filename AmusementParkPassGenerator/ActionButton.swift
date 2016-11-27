@@ -12,20 +12,20 @@ enum ActionButtons: String {
     case GeneratePass = "Generate Pass"
     case PopulateData = "Populate Data"
     
-    var x: Int {
+    var x: CGFloat {
         switch self {
-        case .GeneratePass:  return TextField.offsetX
-        case .PopulateData:  return TextField.offsetX + width + TextField.marginX
+        case .GeneratePass:  return ViewController.marginX
+        case .PopulateData:  return ViewController.marginX * 2 + width
         }
     }
-    var y: Int {
-        return Int(UIScreen.main.bounds.size.height - 280)
+    var y: CGFloat {
+        return UIScreen.main.bounds.size.height - ViewController.offsetFromBottom - height
     }
-    var width: Int {
-        return (27 * TextField.marginX) / 2 - TextField.marginX
+    var width: CGFloat {
+        return (27 * ViewController.marginX) / 2 - ViewController.marginX
     }
-    var height: Int {
-        return TextField.height
+    var height: CGFloat {
+        return ViewController.marginY * ViewController.heightButtonInMargins
     }
     var backgroundColor: UIColor {
         switch self {
