@@ -51,10 +51,10 @@ class ViewController: UIViewController {
         ]
     var textFields: [TextField] = []
     
-    let mainMenuBar = MenuBar(menuBar: .Top)
-    let guestMenuBar = MenuBar(menuBar: .Bottom)
-    let employeeMenuBar = MenuBar(menuBar: .Bottom)
-    let emptyMenuBar = MenuBar(menuBar: .Bottom)
+    var mainMenuBar = MenuBar(menuBar: .Top)
+    var guestMenuBar = MenuBar(menuBar: .Bottom)
+    var employeeMenuBar = MenuBar(menuBar: .Bottom)
+    var emptyMenuBar = MenuBar(menuBar: .Bottom)
     var activeMenuBar: MenuBar? = nil {
         willSet {
             if self.activeMenuBar == nil {
@@ -83,6 +83,7 @@ class ViewController: UIViewController {
     var employeeMenu: [MenuButton] = []
     
     var wasSelected: UIButton?
+    var isKeyboardShown = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -217,71 +218,150 @@ class ViewController: UIViewController {
     
     // MARK: - Helpers
     
+    func getEntrant() -> Entrant? {
+        guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
+            return nil
+        }
+//        let firstName = self.textFields.findByLabel(label: "First Name")?.text
+//        let lastName = self.textFields.findByLabel(label: "Last Name")?.text
+//        let street = self.textFields.findByLabel(label: "Street Address")?.text
+//        let city = self.textFields.findByLabel(label: "City")?.text
+//        let state = self.textFields.findByLabel(label: "State")?.text
+//        let zipCode = self.textFields.findByLabel(label: "Zip Code")?.text
+//        let ssn = self.textFields.findByLabel(label: "SSN")?.text
+//        let project = self.textFields.findByLabel(label: "Project #")?.text
+//        let company = self.textFields.findByLabel(label: "Company")?.text
+//        let tier = self.textFields.findByLabel(label: "Management Tier")?.text
+//        let dateOfBirth = self.textFields.findByLabel(label: "Date of Birth")?.text
+//        let dateOfVisit = self.textFields.findByLabel(label: "Date of Visit")?.text
+//        let entrant = Entrant(type: type, firstName: firstName, lastName: lastName, streetAddress: street, city: city, state: state, zipCode: zipCode, dateOfBirth: dateOfBirth, managementTier: tier, socialSecurityNumber: ssn, projectNumber: project, vendorCompany: company, dateOfVisit: dateOfVisit)
+//        return entrant
+        
+        var dict: EntrantInfo = [:]
+        for req in Requirements.array {
+            dict.updateValue(self.textFields.findByLabel(label: req.rawValue)?.text, forKey: req)
+        }
+        let entrant = Entrant(type: type, dictionary: dict)
+        return entrant
+    }
+    
+    func setEntrant(entrant: Entrant?) {
+        guard let entrant = entrant else {
+            return
+        }
+        
+        for req in Requirements.array {
+            if let value = entrant.info[req] {
+                self.textFields.findByLabel(label: req.rawValue)?.text = value
+            }
+        }
+        
+        let type = entrant.type
+        if let wasSelected = self.wasSelected {
+            wasSelected.unselect()
+        }
+        var allButtons = topMenu
+        allButtons.append(contentsOf: guestMenu)
+        allButtons.append(contentsOf: employeeMenu)
+        if let button = allButtons.findByLabel(label: type.rawValue) {
+            button.select()
+            self.wasSelected = button.button
+        }
+    }
+    
+    func removeUIElements() -> Entrant? {
+        let entrant = getEntrant()
+        
+        self.genPassButton.removeFromSuperview()
+        self.popDataButton.removeFromSuperview()
+        
+        self.mainMenuBar.removeFromSuperview()
+        self.guestMenuBar.removeFromSuperview()
+        self.employeeMenuBar.removeFromSuperview()
+        self.emptyMenuBar.removeFromSuperview()
+        for button in self.topMenu {
+            button.button.removeFromSuperview()
+        }
+        for button in self.guestMenu {
+            button.button.removeFromSuperview()
+        }
+        for button in self.employeeMenu {
+            button.button.removeFromSuperview()
+        }
+        
+        for textField in self.textFields {
+            if let label = textField.label {
+                label.removeFromSuperview()
+            }
+            textField.line.removeFromSuperview()
+            textField.removeFromSuperview()
+        }
+        self.textFields.removeAll()
+        
+        return entrant
+    }
+    
+    func setupUIElements(entrant: Entrant?) {
+        self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(self.generatePass), parentView: self.view)
+        self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(self.populateData), parentView: self.view)
+        
+        self.mainMenuBar = MenuBar(menuBar: .Top)
+        self.guestMenuBar = MenuBar(menuBar: .Bottom)
+        self.employeeMenuBar = MenuBar(menuBar: .Bottom)
+        self.emptyMenuBar = MenuBar(menuBar: .Bottom)
+        
+        
+        self.view.addSubview(self.mainMenuBar)
+        self.view.addSubview(self.guestMenuBar)
+        self.view.addSubview(self.employeeMenuBar)
+        self.view.addSubview(self.emptyMenuBar)
+        self.activeMenuBar = self.emptyMenuBar
+        
+        self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: self.topMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
+        self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: self.guestMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
+        self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: self.employeeMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
+        
+        for desc in ViewController.textFieldsTitles {
+            let textField = TextField(textFieldDesc: desc)
+            self.textFields.append(textField)
+            textField.appendTo(view: self.view)
+        }
+        
+        setEntrant(entrant: entrant)
+    }
+    
     func keyboardWillShow(notification: NSNotification) {
+        if self.isKeyboardShown {
+            return
+        }
+    
         if let userInfo = notification.userInfo, let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardFrame = keyboardFrameValue.cgRectValue
             let height = keyboardFrame.height
             UIView.animate(withDuration: 0.8) {
-                
-                self.genPassButton.removeFromSuperview()
-                self.popDataButton.removeFromSuperview()
-                
-                self.mainMenuBar.removeFromSuperview()
-                self.guestMenuBar.removeFromSuperview()
-                self.employeeMenuBar.removeFromSuperview()
-                self.emptyMenuBar.removeFromSuperview()
-                for button in self.topMenu {
-                    button.button.removeFromSuperview()
-                }
-                for button in self.guestMenu {
-                    button.button.removeFromSuperview()
-                }
-                for button in self.employeeMenu {
-                    button.button.removeFromSuperview()
-                }
-                
-                for textField in self.textFields {
-                    if let label = textField.label {
-                        label.removeFromSuperview()
-                    }
-                    textField.line.removeFromSuperview()
-                    textField.removeFromSuperview()
-                }
-                
+                let entrant = self.removeUIElements()
                 ViewController.offsetFromBottom += height
-                
-                self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(self.generatePass), parentView: self.view)
-                self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(self.populateData), parentView: self.view)
-                
-                self.view.addSubview(self.mainMenuBar)
-                self.view.addSubview(self.guestMenuBar)
-                self.view.addSubview(self.employeeMenuBar)
-                self.view.addSubview(self.emptyMenuBar)
-                self.activeMenuBar = self.emptyMenuBar
-                
-                self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: self.topMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
-                self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: self.guestMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
-                self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: self.employeeMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
-                
-                //        let tf = TextField(positionX: 0, totalX: 2, positionY: 0, totalY: 0, isEditable: .Disabled, label: "Test", placeholder: "Test")
-                //        tf.appendTo(view: self.view)
-                
-                for desc in ViewController.textFieldsTitles {
-                    let textField = TextField(textFieldDesc: desc)
-                    self.textFields.append(textField)
-                    textField.appendTo(view: self.view)
-                }
-
-                
-                self.view.layoutIfNeeded()
+                self.setupUIElements(entrant: entrant)
             }
         }
+        self.isKeyboardShown = true
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.8) {
-            self.view.layoutIfNeeded()
+        if !self.isKeyboardShown {
+            return
         }
+        
+        if let userInfo = notification.userInfo, let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardFrame = keyboardFrameValue.cgRectValue
+            let height = keyboardFrame.height
+            UIView.animate(withDuration: 0.8) {
+                let entrant = self.removeUIElements()
+                ViewController.offsetFromBottom -= height
+                self.setupUIElements(entrant: entrant)
+            }
+        }
+        self.isKeyboardShown = false
     }
     
 }

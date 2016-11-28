@@ -66,3 +66,16 @@ extension MenuBar {
         return result
     }
 }
+
+extension Array where Element: MenuButton {
+    func findByLabel(label: String) -> MenuButton? {
+        let result = self.first { (menuButton) -> Bool in
+            if menuButton.button.currentTitle == label {
+                return true
+            } else {
+                return false
+            }
+        }
+        return result
+    }
+}

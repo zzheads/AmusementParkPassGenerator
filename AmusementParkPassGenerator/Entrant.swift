@@ -46,7 +46,12 @@ class Entrant: Entrantable {
         info.updateValue(vendorCompany,         forKey: .VendorCompany)
         info.updateValue(dateOfVisit,           forKey: .DateOfVisit)
     }
-        
+    
+    init(type: EntrantType, dictionary: EntrantInfo) {
+        self.type = type
+        self.info = dictionary
+    }
+    
     func swipe(unit: CheckUnitType) {
         let result = unit.check(self)
         if (result.success) {

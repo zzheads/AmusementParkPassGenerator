@@ -27,6 +27,10 @@ enum Requirements: String, CheckParent, CustomStringConvertible {
     var description: String {
         return self.rawValue
     }
+    
+    static var array: [Requirements] {
+        return [.FirstName, .LastName, .StreetAddress, .City, .State, .ZipCode, .DateOfBirth, .ManagementTier, .SocialSecurityNumber, .ProjectNumber, .VendorCompany, .DateOfVisit]
+    }
 }
 
 // MARK: - Requirements protocols
