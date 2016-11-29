@@ -208,9 +208,15 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Testing model methods
+  
     
+    // Let this method stay just to show how easy you can setup own delegation checking method for units
+    //
+    //
+    //
 //    func TestingModel() {
-//        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: "02/06/1974", managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: "22/11/2016")
+//        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: "02/06/1974", managementTier:
+//          "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: "22/11/2016")
 //        let anotherEntrant = Entrant(type: .GuestVip)
 //        
 //        var ride = RideTurnstyle()
