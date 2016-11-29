@@ -70,11 +70,6 @@ class Entrant: Entrantable {
     
     func swipe(unit: CheckUnitType) -> CheckResult {
         let result = unit.check(self)
-        if (result.success) {
-            Sound.AccessGranted.play()
-        } else {
-            Sound.AccessDenied.play()
-        }
         return result
     }
 }

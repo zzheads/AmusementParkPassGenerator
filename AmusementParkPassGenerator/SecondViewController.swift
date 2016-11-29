@@ -188,34 +188,89 @@ class SecondViewController: UIViewController {
     func testButtonPressed(sender: UIButton) {
         switch sender {
         case areaButton:
-            var result = entrant.swipe(unit: OfficeDoor()).message + "\n"
+            var text: String = ""
+            
+            var result = entrant.swipe(unit: OfficeDoor())
+            text += result.message + "\n"
             delayWithSeconds(1) {
-                self.testResult.label.text = result
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
             }
-            result += entrant.swipe(unit: KitchenDoor()).message + "\n"
-            delayWithSeconds(2) {
-                self.testResult.label.text = result
-            }
-            result += entrant.swipe(unit: AmusementDoor()).message + "\n"
+            
+            result = entrant.swipe(unit: KitchenDoor())
+            text += result.message + "\n"
             delayWithSeconds(3) {
-                self.testResult.label.text = result
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
             }
-            result += entrant.swipe(unit: MaintenanceDoor()).message + "\n"
-            delayWithSeconds(4) {
-                self.testResult.label.text = result
-            }
-            result += entrant.swipe(unit: RideControl()).message
+
+            result = entrant.swipe(unit: AmusementDoor())
+            text += result.message + "\n"
             delayWithSeconds(5) {
-                self.testResult.label.text = result
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
             }
+
+            result = entrant.swipe(unit: MaintenanceDoor())
+            text += result.message + "\n"
+            delayWithSeconds(7) {
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
+            }
+
+            result = entrant.swipe(unit: RideControl())
+            text += result.message + "\n"
+            delayWithSeconds(9) {
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
+            }
+
         case rideButton:
-            var result = self.entrant.swipe(unit: RideTurnstyle()).message + "\n"
-            self.testResult.label.text = result
-            sleep(5)
-            result = result + self.entrant.swipe(unit: SkipRideTurnstyle()).message
-            self.testResult.label.text = result
+            var result = self.entrant.swipe(unit: RideTurnstyle())
+            var text = result.message + "\n"
+            delayWithSeconds(1) {
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
+            }
+            
+            result = self.entrant.swipe(unit: SkipRideTurnstyle())
+            text += result.message
+            delayWithSeconds(2) {
+                self.testResult.label.text = text
+                if result.success {
+                    Sound.AccessGranted.play()
+                } else {
+                    Sound.AccessDenied.play()
+                }
+            }
+            
         case discountButton:
             self.testResult.label.text = entrant.swipe(unit: CashMachine()).message
+            
         default:
             break
         }
