@@ -27,6 +27,12 @@ class TestResult: UIView {
         self.backgroundColor = AppColor.BlueGray.rawValue
         self.layer.cornerRadius = 4
         self.layer.masksToBounds = true
+        
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.layer.shadowRadius = 10
+        
         self.addSubview(self.label)
         self.label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

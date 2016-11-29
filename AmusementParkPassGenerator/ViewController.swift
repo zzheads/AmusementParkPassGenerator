@@ -155,8 +155,6 @@ class ViewController: UIViewController {
     }
     
     func generatePass(sender _: UIButton) {
-        print("Generate pass!")
-        
         guard let entrant = getEntrant() else {
             print("Empty entrant")
             return
@@ -165,9 +163,11 @@ class ViewController: UIViewController {
             try entrant.checkRequirements()
             print("\(entrant)")
         } catch let error as RequirementsError {
-            print("Error creating entrant, you have to enter all selected fields, there is no info: \(error.localizedDescription)")
+            showAlert(title: "Can't create entrant", message: "You have to enter all selected fields, there is no info: \(error.localizedDescription)")
+            return
         } catch let error {
-            print("\(error.localizedDescription)")
+            showAlert(title: "Error", message: "\(error.localizedDescription)")
+            return
         }
         
         let secondViewController = SecondViewController(entrant: entrant)
@@ -175,9 +175,8 @@ class ViewController: UIViewController {
     }
 
     func populateData(sender _: UIButton) {
-        print("Populate Data!")
         guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
-            print("You have to select type of entrant first!")
+            showAlert(title: "Can't populate data", message: "You have to select type of entrant first")
             return
         }
         let reqs = Entrant(type: type).requirements
@@ -216,6 +215,13 @@ class ViewController: UIViewController {
 //    }
     
     // MARK: - Helpers
+
+    func showAlert(title: String, message: String, style: UIAlertControllerStyle = .alert) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: style)
+        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true, completion: nil)
+    }
     
     func getEntrant() -> Entrant? {
         guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {

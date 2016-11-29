@@ -10,8 +10,8 @@ import Foundation
 
 class PopulateData {
     static let dict: [Requirements: [String]] = [
-        .FirstName: ["John", "Alexey", "Chris", "Sidney", "Mario", "Patric", "Victor"],
-        .LastName: ["Doe", "Papin", "Rea", "Crosby", "Malkin", "Lemeux", "Roy", "Ivanoff"],
+        .FirstName: ["John", "Alexey", "Chris", "Sidney", "Mario", "Patric", "Victor", "Cliff", "Andrew"],
+        .LastName: ["Doe", "Papin", "Richards", "Crosby", "Malkin", "Lemeux", "Roy", "Ivanoff", "Hall"],
         .StreetAddress: ["Bellemare str 11-12", "825 Dawson Dr", "69 Axes Road", "Baker Str 2216", "Russell Street, WC1B 3DG", "Bankside, SE1 9TG", "Threadneedle Street, EC2R 8AH"],
         .City: ["New York", "Los Angeles", "Pittsburg", "London", "Paris", "Mexico"],
         .State: ["NY", "CO", "Idaho", "Iowa", "WY", "WA", "AR", "HI", "DE", "IL"],
