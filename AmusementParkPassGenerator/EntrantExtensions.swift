@@ -22,8 +22,16 @@ extension Entrant: CustomStringConvertible {
     }
     
     var fullName: String? {
-        let firstName = self.info[.FirstName]!
-        let lastName = self.info[.LastName]!
+        var firstName: String?
+        var lastName: String?
+        
+        if let firstNameInfo = self.info[.FirstName] {
+            firstName = firstNameInfo
+        }
+        
+        if let lastNameInfo = self.info[.LastName] {
+            lastName = lastNameInfo
+        }
         
         if let firstName = firstName {
             if let lastName = lastName {
@@ -40,16 +48,16 @@ extension Entrant: CustomStringConvertible {
 
     var address: String? {
         var address: String = ""
-        if let streetAddress = self.info[.StreetAddress]! {
-            address += "\(streetAddress), "
+        if let streetAddress = self.info[.StreetAddress], let addr = streetAddress {
+            address += "\(addr), "
         }
-        if let city = self.info[.City]! {
+        if let cityInfo = self.info[.City], let city = cityInfo {
             address += "\(city), "
         }
-        if let state = self.info[.State]! {
+        if let stateInfo = self.info[.State], let state = stateInfo {
             address += "\(state), "
         }
-        if let zipCode = self.info[.ZipCode]! {
+        if let zipCodeInfo = self.info[.ZipCode], let zipCode = zipCodeInfo {
             address += "\(zipCode)"
         }
         if !address.isEmpty {
@@ -67,23 +75,23 @@ extension Entrant: CustomStringConvertible {
         if let address = self.address {
             descriptionString += "Address: \(address), "
         }
-        if let date = self.info[.DateOfBirth]! {
+        if let dateInfo = self.info[.DateOfBirth], let date = dateInfo {
             descriptionString += "Born: \(date), "
         }
-        if let management = self.info[.ManagementTier]! {
+        if let managementInfo = self.info[.ManagementTier], let management = managementInfo {
             descriptionString += "Tier: \(management), "
         }
-        if let projectNumber = self.info[.ProjectNumber]! {
+        if let projectNumberInfo = self.info[.ProjectNumber], let projectNumber = projectNumberInfo {
             descriptionString += "Project#: \(projectNumber), "
         }
-        if let socialSecurityNumber = self.info[.SocialSecurityNumber]! {
-            descriptionString += "SSN: \(socialSecurityNumber), "
+        if let socialSecurityNumber = self.info[.SocialSecurityNumber], let ssn = socialSecurityNumber {
+            descriptionString += "SSN: \(ssn), "
         }
-        if let vendorCompany = self.info[.VendorCompany]! {
-            descriptionString += "Company: \(vendorCompany), "
+        if let vendorCompany = self.info[.VendorCompany], let company = vendorCompany {
+            descriptionString += "Company: \(company), "
         }
-        if let dateOfVisit = self.info[.DateOfVisit]! {
-            descriptionString += "Date of Visit: \(dateOfVisit), "
+        if let dateOfVisit = self.info[.DateOfVisit], let date = dateOfVisit {
+            descriptionString += "Date of Visit: \(date), "
         }
         return descriptionString
     }

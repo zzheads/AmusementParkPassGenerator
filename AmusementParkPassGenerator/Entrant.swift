@@ -22,6 +22,22 @@ enum EntrantType: String {
     case GuestSenior = "Senior"
     case EmployeeContract = "Contract"
     case Vendor = "Vendor"
+    
+    var description: String {
+        switch self {
+        case .GuestClassic:          return "Adult Guest"
+        case .GuestVip:              return "VIP Guest"
+        case .GuestChild:            return "Child Guest"
+        case .EmployeeFood:          return "Hourly Employee - Food Services"
+        case .EmployeeRide:          return "Hourly Employee - Ride Services"
+        case .EmployeeMaintenance:   return "Hourly Employee - Maintenance"
+        case .Manager:               return "Manager"
+        case .GuestSeasonPass:       return "Season Guest"
+        case .GuestSenior:           return "Senior Guest"
+        case .EmployeeContract:      return "Contract Employee"
+        case .Vendor:                return "Vendor"
+        }
+    }
 }
 
 typealias EntrantInfo = [Requirements: String?]
@@ -52,14 +68,14 @@ class Entrant: Entrantable {
         self.info = dictionary
     }
     
-    func swipe(unit: CheckUnitType) {
+    func swipe(unit: CheckUnitType) -> CheckResult {
         let result = unit.check(self)
         if (result.success) {
             Sound.AccessGranted.play()
         } else {
             Sound.AccessDenied.play()
         }
-        print(result.message)
+        return result
     }
 }
 

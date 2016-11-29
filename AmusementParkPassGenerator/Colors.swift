@@ -21,6 +21,7 @@ enum AppColor {
     case GrayHalfTransparent
     case HalfTransparent
     case Transparent
+    case BlueGray
     
     var rawValue: UIColor {
         switch self {
@@ -44,6 +45,8 @@ enum AppColor {
             return UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 0.5)
         case .Transparent:
             return UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 0.0)
+        case .BlueGray:
+            return UIColor(red: 203/255.0, green: 198/255.0, blue: 207/255.0, alpha: 1.0)
         }
     }
 }

@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     var genPassButton: UIButton = UIButton(type: .system)
     var popDataButton: UIButton = UIButton(type: .system)
     
-    static var offsetFromBottom: CGFloat = 10
+    static var offsetFromBottom: CGFloat = 310
     static var totalHeight: CGFloat {
         return CGFloat(UIScreen.main.bounds.size.height - offsetFromBottom)
     }
@@ -87,8 +87,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         
         genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(generatePass), parentView: self.view)
         popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(populateData), parentView: self.view)
@@ -103,9 +101,6 @@ class ViewController: UIViewController {
         self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: guestMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: employeeMenuTitles, target: self, action: #selector(buttonPressed(sender:)))
         
-//        let tf = TextField(positionX: 0, totalX: 2, positionY: 0, totalY: 0, isEditable: .Disabled, label: "Test", placeholder: "Test")
-//        tf.appendTo(view: self.view)
-        
         for desc in ViewController.textFieldsTitles {
             let textField = TextField(textFieldDesc: desc)
             self.textFields.append(textField)
@@ -113,7 +108,7 @@ class ViewController: UIViewController {
         }
         
         
-        TestingModel()
+//        TestingModel()
     }
 
     override func didReceiveMemoryWarning() {
@@ -162,23 +157,10 @@ class ViewController: UIViewController {
     func generatePass(sender _: UIButton) {
         print("Generate pass!")
         
-        guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
+        guard let entrant = getEntrant() else {
+            print("Empty entrant")
             return
         }
-        let firstName = self.textFields.findByLabel(label: "First Name")?.text
-        let lastName = self.textFields.findByLabel(label: "Last Name")?.text
-        let street = self.textFields.findByLabel(label: "Street Address")?.text
-        let city = self.textFields.findByLabel(label: "City")?.text
-        let state = self.textFields.findByLabel(label: "State")?.text
-        let zipCode = self.textFields.findByLabel(label: "Zip Code")?.text
-        let ssn = self.textFields.findByLabel(label: "SSN")?.text
-        let project = self.textFields.findByLabel(label: "Project #")?.text
-        let company = self.textFields.findByLabel(label: "Company")?.text
-        let tier = self.textFields.findByLabel(label: "Management Tier")?.text
-        let dateOfBirth = self.textFields.findByLabel(label: "Date of Birth")?.text
-        let dateOfVisit = self.textFields.findByLabel(label: "Date of Visit")?.text
-        
-        let entrant = Entrant(type: type, firstName: firstName, lastName: lastName, streetAddress: street, city: city, state: state, zipCode: zipCode, dateOfBirth: dateOfBirth, managementTier: tier, socialSecurityNumber: ssn, projectNumber: project, vendorCompany: company, dateOfVisit: dateOfVisit)
         do {
             try entrant.checkRequirements()
             print("\(entrant)")
@@ -187,34 +169,51 @@ class ViewController: UIViewController {
         } catch let error {
             print("\(error.localizedDescription)")
         }
+        
+        let secondViewController = SecondViewController(entrant: entrant)
+        self.present(secondViewController, animated: false, completion: nil)
     }
 
     func populateData(sender _: UIButton) {
         print("Populate Data!")
+        guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
+            print("You have to select type of entrant first!")
+            return
+        }
+        let reqs = Entrant(type: type).requirements
+        var dict: EntrantInfo = [:]
+        for req in reqs {
+            let values = PopulateData.dict[req]!
+            let randomNum = Int(arc4random_uniform(UInt32(values.count)))
+            let randomValue = values[randomNum]
+            dict.updateValue(randomValue, forKey: req)
+        }
+        let entrant = Entrant(type: type, dictionary: dict)
+        setEntrant(entrant: entrant)
     }
     
     // MARK: - Testing model methods
     
-    func TestingModel() {
-        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: "02/06/1974", managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: "22/11/2016")
-        let anotherEntrant = Entrant(type: .GuestVip)
-        
-        var ride = RideTurnstyle()
-        entrant.swipe(unit: ride)
-        anotherEntrant.swipe(unit: ride)
-        ride.setDelegate { (entrant) -> (success: Bool, message: String) in
-            let result: (success: Bool, message: String)
-            result.success = true
-            result.message = "Whoops, \(ride.name) is broken (by implementing my own checking method) and passes anybody!"
-            return result
-        }
-        entrant.swipe(unit: ride)
-        
-        entrant.swipe(unit: OfficeDoor())
-        entrant.swipe(unit: CashMachine())
-        anotherEntrant.swipe(unit: OfficeDoor())
-        anotherEntrant.swipe(unit: CashMachine())
-    }
+//    func TestingModel() {
+//        let entrant = Entrant(type: EntrantType.Manager, firstName: "Alex", lastName: "Papin", streetAddress: "Bellemare blw", city: "Montreal", state: "QUE", zipCode: "400005", dateOfBirth: "02/06/1974", managementTier: "General Manager", socialSecurityNumber: "345-22-876521", projectNumber: "1003", vendorCompany: "Fedex", dateOfVisit: "22/11/2016")
+//        let anotherEntrant = Entrant(type: .GuestVip)
+//        
+//        var ride = RideTurnstyle()
+//        entrant.swipe(unit: ride)
+//        anotherEntrant.swipe(unit: ride)
+//        ride.setDelegate { (entrant) -> (success: Bool, message: String) in
+//            let result: (success: Bool, message: String)
+//            result.success = true
+//            result.message = "Whoops, \(ride.name) is broken (by implementing my own checking method) and passes anybody!"
+//            return result
+//        }
+//        entrant.swipe(unit: ride)
+//        
+//        entrant.swipe(unit: OfficeDoor())
+//        entrant.swipe(unit: CashMachine())
+//        anotherEntrant.swipe(unit: OfficeDoor())
+//        anotherEntrant.swipe(unit: CashMachine())
+//    }
     
     // MARK: - Helpers
     
@@ -222,23 +221,9 @@ class ViewController: UIViewController {
         guard let wasSelected = self.wasSelected, let title = wasSelected.currentTitle, let type = EntrantType(rawValue: title) else {
             return nil
         }
-//        let firstName = self.textFields.findByLabel(label: "First Name")?.text
-//        let lastName = self.textFields.findByLabel(label: "Last Name")?.text
-//        let street = self.textFields.findByLabel(label: "Street Address")?.text
-//        let city = self.textFields.findByLabel(label: "City")?.text
-//        let state = self.textFields.findByLabel(label: "State")?.text
-//        let zipCode = self.textFields.findByLabel(label: "Zip Code")?.text
-//        let ssn = self.textFields.findByLabel(label: "SSN")?.text
-//        let project = self.textFields.findByLabel(label: "Project #")?.text
-//        let company = self.textFields.findByLabel(label: "Company")?.text
-//        let tier = self.textFields.findByLabel(label: "Management Tier")?.text
-//        let dateOfBirth = self.textFields.findByLabel(label: "Date of Birth")?.text
-//        let dateOfVisit = self.textFields.findByLabel(label: "Date of Visit")?.text
-//        let entrant = Entrant(type: type, firstName: firstName, lastName: lastName, streetAddress: street, city: city, state: state, zipCode: zipCode, dateOfBirth: dateOfBirth, managementTier: tier, socialSecurityNumber: ssn, projectNumber: project, vendorCompany: company, dateOfVisit: dateOfVisit)
-//        return entrant
-        
+        let reqs = Entrant(type: type).requirements
         var dict: EntrantInfo = [:]
-        for req in Requirements.array {
+        for req in reqs {
             dict.updateValue(self.textFields.findByLabel(label: req.rawValue)?.text, forKey: req)
         }
         let entrant = Entrant(type: type, dictionary: dict)
@@ -268,101 +253,5 @@ class ViewController: UIViewController {
             self.wasSelected = button.button
         }
     }
-    
-    func removeUIElements() -> Entrant? {
-        let entrant = getEntrant()
-        
-        self.genPassButton.removeFromSuperview()
-        self.popDataButton.removeFromSuperview()
-        
-        self.mainMenuBar.removeFromSuperview()
-        self.guestMenuBar.removeFromSuperview()
-        self.employeeMenuBar.removeFromSuperview()
-        self.emptyMenuBar.removeFromSuperview()
-        for button in self.topMenu {
-            button.button.removeFromSuperview()
-        }
-        for button in self.guestMenu {
-            button.button.removeFromSuperview()
-        }
-        for button in self.employeeMenu {
-            button.button.removeFromSuperview()
-        }
-        
-        for textField in self.textFields {
-            if let label = textField.label {
-                label.removeFromSuperview()
-            }
-            textField.line.removeFromSuperview()
-            textField.removeFromSuperview()
-        }
-        self.textFields.removeAll()
-        
-        return entrant
-    }
-    
-    func setupUIElements(entrant: Entrant?) {
-        self.genPassButton = UIButton.getButton(type: .GeneratePass, target: self, action: #selector(self.generatePass), parentView: self.view)
-        self.popDataButton = UIButton.getButton(type: .PopulateData, target: self, action: #selector(self.populateData), parentView: self.view)
-        
-        self.mainMenuBar = MenuBar(menuBar: .Top)
-        self.guestMenuBar = MenuBar(menuBar: .Bottom)
-        self.employeeMenuBar = MenuBar(menuBar: .Bottom)
-        self.emptyMenuBar = MenuBar(menuBar: .Bottom)
-        
-        
-        self.view.addSubview(self.mainMenuBar)
-        self.view.addSubview(self.guestMenuBar)
-        self.view.addSubview(self.employeeMenuBar)
-        self.view.addSubview(self.emptyMenuBar)
-        self.activeMenuBar = self.emptyMenuBar
-        
-        self.topMenu = self.mainMenuBar.addButtons(navBar: .Top, titles: self.topMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
-        self.guestMenu = self.guestMenuBar.addButtons(navBar: .Bottom, titles: self.guestMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
-        self.employeeMenu = self.employeeMenuBar.addButtons(navBar: .Bottom, titles: self.employeeMenuTitles, target: self, action: #selector(self.buttonPressed(sender:)))
-        
-        for desc in ViewController.textFieldsTitles {
-            let textField = TextField(textFieldDesc: desc)
-            self.textFields.append(textField)
-            textField.appendTo(view: self.view)
-        }
-        
-        setEntrant(entrant: entrant)
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        if self.isKeyboardShown {
-            return
-        }
-    
-        if let userInfo = notification.userInfo, let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardFrame = keyboardFrameValue.cgRectValue
-            let height = keyboardFrame.height
-            UIView.animate(withDuration: 0.8) {
-                let entrant = self.removeUIElements()
-                ViewController.offsetFromBottom += height
-                self.setupUIElements(entrant: entrant)
-            }
-        }
-        self.isKeyboardShown = true
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        if !self.isKeyboardShown {
-            return
-        }
-        
-        if let userInfo = notification.userInfo, let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardFrame = keyboardFrameValue.cgRectValue
-            let height = keyboardFrame.height
-            UIView.animate(withDuration: 0.8) {
-                let entrant = self.removeUIElements()
-                ViewController.offsetFromBottom -= height
-                self.setupUIElements(entrant: entrant)
-            }
-        }
-        self.isKeyboardShown = false
-    }
-    
 }
 

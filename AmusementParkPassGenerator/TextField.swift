@@ -30,7 +30,7 @@ typealias TextFieldDesc = (posX: Int, totalX: Int, posY: Int, totalY: Int, title
 
 class TextField: UITextField {
     static var offsetX: CGFloat {
-        return marginX * 1.25
+        return marginX 
     }
     static var offsetY: CGFloat {
         return MenuBars.Top.height + MenuBars.Bottom.height + TextField.marginY * 1.5
