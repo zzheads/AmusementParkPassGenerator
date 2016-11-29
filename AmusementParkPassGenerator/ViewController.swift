@@ -82,6 +82,12 @@ class ViewController: UIViewController {
     var guestMenu: [MenuButton] = []
     var employeeMenu: [MenuButton] = []
     
+    let image: UIImageView = {
+        let image = UIImageView()
+        image.image = #imageLiteral(resourceName: "logo.png")
+        return image
+    }()
+    
     var wasSelected: UIButton?
     var isKeyboardShown = false
     
@@ -106,6 +112,13 @@ class ViewController: UIViewController {
             self.textFields.append(textField)
             textField.appendTo(view: self.view)
         }
+        
+        self.view.addSubview(self.image)
+        self.image.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.image.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.image.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -ViewController.offsetFromBottom / 2)
+            ])
         
         
 //        TestingModel()
@@ -164,6 +177,9 @@ class ViewController: UIViewController {
             print("\(entrant)")
         } catch let error as RequirementsError {
             showAlert(title: "Can't create entrant", message: "You have to enter all selected fields, there is no info: \(error.localizedDescription)")
+            return
+        } catch let error as SyntaxError {
+            showAlert(title: "Can't create entrant", message: "Incorrect data: \(error.localizedDescription)")
             return
         } catch let error {
             showAlert(title: "Error", message: "\(error.localizedDescription)")

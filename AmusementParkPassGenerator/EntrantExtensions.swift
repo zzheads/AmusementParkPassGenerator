@@ -109,6 +109,14 @@ extension Entrant {
                         } else {
                             throw RequirementsError.unknownError
                         }
+                    } else {
+                        if !key.predicate(value) {
+                            if let error = SyntaxError(rawValue: key.rawValue) {
+                                throw error
+                            } else {
+                                throw SyntaxError.unknownError
+                            }
+                        }
                     }
                 } else {
                     if let error = RequirementsError(rawValue: key.rawValue) {
