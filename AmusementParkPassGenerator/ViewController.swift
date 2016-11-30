@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     }
 
     static let textFieldsTitles: [TextFieldDesc] = [
-        (posX: 0, totalX: 3, posY: 0, totalY: 5, title: "Date of Birth", isEditable: .Disabled,placeholder: "MM/DD/YYYY"),
+        (posX: 0, totalX: 3, posY: 0, totalY: 5, title: "Date of Birth", isEditable: .Disabled,placeholder: "DD/MM/YYYY"),
         (posX: 1, totalX: 3, posY: 0, totalY: 5, title: "SSN", isEditable: .Disabled, placeholder: "###-##-####"),
         (posX: 2, totalX: 3, posY: 0, totalY: 5, title: "Project #", isEditable: .Disabled, placeholder: "#######"),
         (posX: 0, totalX: 2, posY: 1, totalY: 5, title: "First Name", isEditable: .Disabled, placeholder: nil),
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         (posX: 1, totalX: 2, posY: 3, totalY: 5, title: "City", isEditable: .Disabled, placeholder: nil),
         (posX: 0, totalX: 3, posY: 4, totalY: 5, title: "State", isEditable: .Disabled, placeholder: nil),
         (posX: 1, totalX: 3, posY: 4, totalY: 5, title: "Zip Code", isEditable: .Disabled, placeholder: nil),
-        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Date of Visit", isEditable: .Disabled, placeholder: "MM/DD/YYYY"),
+        (posX: 2, totalX: 3, posY: 4, totalY: 5, title: "Date of Visit", isEditable: .Disabled, placeholder: "DD/MM/YYYY"),
         ]
     var textFields: [TextField] = []
     

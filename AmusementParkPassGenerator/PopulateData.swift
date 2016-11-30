@@ -8,6 +8,9 @@
 
 import Foundation
 
+// MARK: - Populate Data
+// MARK: - There are NOT ONLY VALID data, there are wrong ProjectNumbers and VendorCompany's
+
 class PopulateData {
     static let dict: [Requirements: [String]] = [
         .FirstName: ["John", "Alexey", "Chris", "Sidney", "Mario", "Patric", "Victor", "Cliff", "Andrew"],
@@ -18,7 +21,7 @@ class PopulateData {
         .ZipCode: ["400005", "19712", "12555", "17600", "24007", "33465", "55301"],
         .DateOfBirth: ["12/06/1973", "02/07/1999", "13/08/1982", "01/03/2003", "25/04/1969", "15/02/1980"],
         .DateOfVisit: ["10/10/2016", "05/05/2016", "13/11/2016", "12/11/2016", "05/04/2016"],
-        .VendorCompany: ["Coca Cola", "Google", "Apple", "IBM", "NHL TV", "FedEx", "Qwintry Inc"],
+        .VendorCompany: ["Coca Cola", "Google", "Apple", "IBM", "NHL TV", "Fedex", "Acme", "Orkin", "NW Electrical"],
         .ManagementTier: ["General Manager", "Regional CEO", "Assistant", "Sales Chief", "Tech Support Chief"],
         .SocialSecurityNumber: ["123-45-6789", "111-22-3333", "234-99-0073", "991-66-3455", "534-22-8972"],
         .ProjectNumber: ["1001", "1002", "1003", "2001", "2002", "9999", "6455", "2009", "1616"]

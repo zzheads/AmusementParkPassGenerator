@@ -45,6 +45,10 @@ enum SyntaxError: String, Error {
 }
 
 // MARK: - Requirements extension
+// MARK: - Text Field validation here
+// MARK: - You can implement any validation for specific Requirements by defining predicate (String -> Bool) here
+
+// MARK: - Validation Zip Code: Can not implement, because zip codes around the world doesnt have common pattern
 
 extension Requirements {
     var predicate: TextFieldPredicate {
