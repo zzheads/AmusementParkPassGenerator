@@ -10,6 +10,8 @@ import Foundation
 
 typealias TextFieldPredicate = (String) -> Bool
 
+// MARK: - SyntaxError
+
 enum SyntaxError: String, Error {
     case FirstName = "First Name"
     case LastName = "Last Name"
