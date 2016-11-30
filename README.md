@@ -2,7 +2,8 @@
 ###by Alexey Papin
 <img width="400"src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRGazv7ZhZ82KHNshlU26qJnlPcO0cnzgBBhTZcdxy5MLNKUgkH">
 
-[![Latest Stable Version](https://poser.pugx.org/edward/aaa/v/stable)](https://packagist.org/packages/edward/aaa)
+[![Build Status](https://travis-ci.org/Jintin/Swimat.svg?branch=master)](https://travis-ci.org/Jintin/Swimat)
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/matteocrippa/awesome-swift)
 
 [Buisness Rules Matrix](https://www.icloud.com/numbers/0yUs5A6bcia_gr2s0ZWJAKtVg#Business_Rules_Matrix-Project4-5)
 
