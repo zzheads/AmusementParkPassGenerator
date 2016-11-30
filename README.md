@@ -6,6 +6,7 @@
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/matteocrippa/awesome-swift)
 
 <img width="400" src="Снимок экрана 2016-11-30 в 7.16.52.png">
+<img width="400" src="Снимок экрана 2016-11-30 в 7.17.29.png">
 
 [Buisness Rules Matrix](https://www.icloud.com/numbers/0yUs5A6bcia_gr2s0ZWJAKtVg#Business_Rules_Matrix-Project4-5)
 
