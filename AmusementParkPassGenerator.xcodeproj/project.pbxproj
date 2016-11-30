@@ -27,7 +27,6 @@
 		A6CDBFF41DECC9D300BA59DC /* Pass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CDBFF31DECC9D300BA59DC /* Pass.swift */; };
 		A6CDBFF61DECE47D00BA59DC /* TestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CDBFF51DECE47D00BA59DC /* TestResult.swift */; };
 		A6CDBFF81DED850200BA59DC /* TextFieldPredicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CDBFF71DED850200BA59DC /* TextFieldPredicates.swift */; };
-		A6CDBFFA1DEDA62800BA59DC /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A6CDBFF91DEDA62800BA59DC /* logo.png */; };
 		A6EDC8261DE0B8560059DEFA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EDC8251DE0B8560059DEFA /* Colors.swift */; };
 		A6EDC8631DE104FF0059DEFA /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EDC8621DE104FF0059DEFA /* Menu.swift */; };
 		A6F322441DE41ECC00B127E4 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F322431DE41ECC00B127E4 /* Sound.swift */; };
@@ -85,7 +84,6 @@
 		A6CDBFF31DECC9D300BA59DC /* Pass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pass.swift; sourceTree = "<group>"; };
 		A6CDBFF51DECE47D00BA59DC /* TestResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestResult.swift; sourceTree = "<group>"; };
 		A6CDBFF71DED850200BA59DC /* TextFieldPredicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldPredicates.swift; sourceTree = "<group>"; };
-		A6CDBFF91DEDA62800BA59DC /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = AmusementParkMockups/logo.png; sourceTree = "<group>"; };
 		A6EDC8251DE0B8560059DEFA /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		A6EDC8621DE104FF0059DEFA /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		A6F322431DE41ECC00B127E4 /* Sound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
@@ -182,7 +180,6 @@
 		A635864C1DE09C8A00B561EB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A6CDBFF91DEDA62800BA59DC /* logo.png */,
 				A63586481DE09C8500B561EB /* AccessDenied.wav */,
 				A63586491DE09C8500B561EB /* AccessGranted.wav */,
 				A63586421DE09ADE00B561EB /* FaceImageAsset.png */,
@@ -344,7 +341,6 @@
 				A63586461DE09ADE00B561EB /* Screen1Mockup.png in Resources */,
 				A635861C1DE0854300B561EB /* Assets.xcassets in Resources */,
 				A635864B1DE09C8500B561EB /* AccessGranted.wav in Resources */,
-				A6CDBFFA1DEDA62800BA59DC /* logo.png in Resources */,
 				A63586451DE09ADE00B561EB /* FaceImageAsset.png in Resources */,
 				A63586471DE09ADE00B561EB /* Screen2Mockup.png in Resources */,
 				A635864A1DE09C8500B561EB /* AccessDenied.wav in Resources */,

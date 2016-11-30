@@ -82,12 +82,6 @@ class ViewController: UIViewController {
     var guestMenu: [MenuButton] = []
     var employeeMenu: [MenuButton] = []
     
-    let image: UIImageView = {
-        let image = UIImageView()
-        image.image = #imageLiteral(resourceName: "logo.png")
-        return image
-    }()
-    
     var wasSelected: UIButton?
     var isKeyboardShown = false
     
@@ -112,14 +106,6 @@ class ViewController: UIViewController {
             self.textFields.append(textField)
             textField.appendTo(view: self.view)
         }
-        
-        self.view.addSubview(self.image)
-        self.image.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.image.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            self.image.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -ViewController.offsetFromBottom / 2)
-            ])
-        
         
 //        TestingModel()
     }
